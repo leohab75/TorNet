@@ -1,0 +1,19 @@
+*.swp
+*.swo
+*.swn
+*.swm
+.DS_Store
+datadir/
+broker/broker
+client/client
+server/server
+proxy/proxy
+probetest/probetest
+snowflake.log
+ignore/
+
+# from running the vagrant setup
+/.vagrant/
+/sdk-tools-linux-*.zip*
+/android-ndk-*
+/tools/

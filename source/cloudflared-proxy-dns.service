@@ -1,0 +1,13 @@
+[Unit]
+Description=DNS over HTTPS (DoH) proxy client
+Wants=network-online.target nss-lookup.target
+Before=nss-lookup.target
+
+[Service]
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+CapabilityBoundingSet=CAP_NET_BIND_SERVICE
+DynamicUser=yes
+ExecStart=/usr/local/bin/cloudflared proxy-dns --port 53 --upstream https://1.1.1.1/dns-query --upstream https://1.0.0.1/dns-query
+
+[Install]
+WantedBy=multi-user.target
