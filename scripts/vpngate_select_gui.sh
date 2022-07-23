@@ -74,23 +74,24 @@ if [[ -f "./tmp/server_list.csv" ]]; then
 
                 base64_vpn=$(cat ./tmp/server_list.csv | grep -i "$Hostname_server" | awk '{print $1}' | cut -f 15 -d ",")
 
-                echo  "$base64_vpn" | base64 -di | tee /usr/local/bin/TorNet/source/server.ovpn 1 &>/dev/null
+                echo "$base64_vpn" | base64 -di | tee /usr/local/bin/TorNet/source/server.ovpn 1 &>/dev/null
 
-                # pkexec env DISPLAY="$DISPLAY" XAUTHORITY="$XAUTHORITY" bash /usr/local/bin/TorNet/scripts/vpngate_select.sh &
+                pkexec env DISPLAY="$DISPLAY" XAUTHORITY="$XAUTHORITY" bash /usr/local/bin/TorNet/scripts/vpngate_select.sh &
 
-                # sleep 12 | zenity --window-icon="$icon" --progress --pulsate --title="Connect" --text="Run .. ." --no-cancel --width=300 --auto-close --auto-kill
+                sleep 12 | zenity --window-icon="$icon" --progress --pulsate --title="Connect" --text="Run .. ." --no-cancel --width=300 --auto-close --auto-kill
 
-                # if grep -q "Initialization Sequence Completed" /usr/local/bin/TorNet/tmp/vpn.log; then
-                #     zenity --info --window-icon="$icon" --text="Initialization Sequence Completed"
-                # elif grep -q "Options error: unknown --redirect-gateway flag: def" /usr/local/bin/TorNet/tmp/vpn.log; then
-                #     zenity --error --window-icon="$icon" --text="Options error: unknown --redirect-gateway flag: def"
-                #     TorNet 'select vpn'
-                # elif grep -q "AUTH: Received control message: AUTH_FAILED" /usr/local/bin/TorNet/tmp/vpn.log; then
-                #     zenity --error --window-icon="$icon" --text="AUTH: Received control message: AUTH_FAILED"
-                #     TorNet 'select vpn'
-                # else
-                #     TorNet 'select vpn'
-                # fi
+                if grep -q "Initialization Sequence Completed" /usr/local/bin/TorNet/tmp/vpn.log; then
+                    zenity --info --window-icon="$icon" --text="Initialization Sequence Completed"
+                elif grep -q "Options error: unknown --redirect-gateway flag: def" /usr/local/bin/TorNet/tmp/vpn.log; then
+                    zenity --error --window-icon="$icon" --text="Options error: unknown --redirect-gateway flag: def"
+                    TorNet 'select vpn'
+                elif grep -q "AUTH: Received control message: AUTH_FAILED" /usr/local/bin/TorNet/tmp/vpn.log; then
+                    zenity --error --window-icon="$icon" --text="AUTH: Received control message: AUTH_FAILED"
+                    TorNet 'select vpn'
+                else
+                    zenity --error --window-icon="$icon" --text="ERROR \n Connect is failed -def"
+                    TorNet 'select vpn'
+                fi
             fi
         fi
 
