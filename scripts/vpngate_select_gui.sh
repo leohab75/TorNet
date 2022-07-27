@@ -11,7 +11,7 @@ fi
 response=$(curl --write-out '%{http_code}' --silent --output ./tmp/server_list.csv http://www.vpngate.net/api/iphone/)
 
 if [[ ! "$response" == "200" ]]; then
-    TorNet 'proxy'
+    TorNet 'proxy' &
     curl --socks5 127.0.0.1:2323 http://www.vpngate.net/api/iphone/ --silent --output ./tmp/server_list.csv
 fi
 
