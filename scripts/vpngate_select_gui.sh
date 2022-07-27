@@ -90,6 +90,8 @@ if [[ -f "./tmp/server_list.csv" ]]; then
                     zenity --error --window-icon="$icon" --text="ERROR \n Connect is failed -def"
                     TorNet 'select vpn'
                 fi
+            else
+                exit 1
             fi
         fi
 

@@ -76,7 +76,6 @@ function status_client() {
     IP=""
     IP=$(wget -qO- eth0.me)
     Socks_IP=""
-    Socks_IP=""
     Socks_IP=$(curl --socks5 127.0.0.1:2323 http://eth0.me)
     hoster=""
     hoster=$(curl ifconfig.io/host)
