@@ -11,8 +11,7 @@ fi
 response=$(curl --write-out '%{http_code}' --silent --output ./tmp/server_list.csv http://www.vpngate.net/api/iphone/)
 
 if [[ ! "$response" == "200" ]]; then
-    TorNet proxy &
-    sleep 30
+    TorNet 'proxy'
     curl --socks5 127.0.0.1:2323 http://www.vpngate.net/api/iphone/ --silent --output ./tmp/server_list.csv
 fi
 
@@ -21,21 +20,20 @@ if [[ -f "./tmp/server_list.csv" ]]; then
     enabled_servers=$(cat ./tmp/server_list.csv | wc -l)
     sed -i 's/ /_/g; /*/d; 2d' ./tmp/server_list.csv
 
-    cat ./tmp/server_list.csv | awk '{print $1}' | cut -f 6 -d "," | sort -u | tee ./tmp/tmp_Country_name 1 &>/dev/null
-    cat ./tmp/server_list.csv | awk '{print $1}' | cut -f 7 -d "," | sort -u | tee ./tmp/tmp_Country_code 1 &>/dev/null
+    cat ./tmp/server_list.csv | awk '{print $1}' | cut -f 6-7 -d "," | sort -u | tee ./tmp/tmp_Country_name 1 &>/dev/null
 
     rm ./tmp/tmp_Country_node
     for i in $(cat ./tmp/tmp_Country_name); do grep "$i" ./tmp/server_list.csv | wc -l >>./tmp/tmp_Country_node; done
 
     select_server=$(zenity --list --radiolist --window-icon="$icon" --title="vpngate best servers" --text="Активные сервера: \
 Всего $enabled_servers" --column="Use" --column="Country" --column="Code" --column="" --column="FLAGS" --column="Кол-во" --hide-column="4" \
-        $(for j in $(cat ./tmp/tmp_Country_code); do
-            echo -e "$(cat ./tmp/tmp_Country_code | sed -n '1p')"
+        $(for j in $(cat ./tmp/tmp_Country_name); do
             echo -e "$(cat ./tmp/tmp_Country_name | sed -n '1p')"
-            echo -e "$(cat ./tmp/tmp_Country_code | sed -n '1p')"
-            echo -e "$(bash /usr/local/bin/TorNet/scripts/country_flags.sh $j)"
+            echo -e "$(cat ./tmp/tmp_Country_name | sed -n '1p' | cut -f 1 -d ,)"
+            echo -e "$(cat ./tmp/tmp_Country_name | sed -n '1p' | cut -f 2 -d ,)"
+            country_code=$(cat ./tmp/tmp_Country_name | sed -n '1p' | cut -f 2 -d ,)
+            bash /usr/local/bin/TorNet/scripts/country_flags.sh "$country_code"
             echo -e "$(cat ./tmp/tmp_Country_node | sed -n '1p')"
-            sed -i '1d' ./tmp/tmp_Country_code
             sed -i '1d' ./tmp/tmp_Country_node
             sed -i '1d' ./tmp/tmp_Country_name
 
