@@ -66,7 +66,7 @@ function redsocks_tor() {
         )
         tor -f torrc &
 
-        sleep 30 | zenity --window-icon="$icon" --progress --pulsate --title="Connect" --text="Подождите 30 сек....." --no-cancel --width=300 --auto-close --auto-kill
+        sleep 30 | zenity --window-icon="$icon" --progress --pulsate --title="Connect" --text="connect proxy ..." --no-cancel --width=300 --auto-close --auto-kill
     fi
     pkexec bash /usr/local/bin/TorNet/scripts/redsocks.sh "$1"
 }
@@ -156,7 +156,7 @@ case "$1" in
     status_client
     ;;
 "speedtest")
-    /usr/local/bin/TorNet/speedtest/speedtest | sed  '/^$/d; 10d' | tee /usr/local/bin/TorNet/tmp/speedtest
+    /usr/local/bin/TorNet/speedtest/speedtest | sed  '/^$/d; 10d' | tee /usr/local/bin/TorNet/tmp/speedtest | zenity --window-icon="$icon" --progress --pulsate --title="Connect" --text="Speedtest ..   ... ." --no-cancel --width=300 --auto-close --auto-kill
     zenity --info --title="Speedtest" --window-icon="$icon" --text="$(cat /usr/local/bin/TorNet/tmp/speedtest | while read line ; do echo $line; done)" --width=300
 
 
