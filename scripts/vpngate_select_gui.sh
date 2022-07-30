@@ -12,6 +12,7 @@ response=$(curl --write-out '%{http_code}' --silent --output ./tmp/server_list.c
 
 if [[ ! "$response" == "200" ]]; then
     TorNet 'proxy' &
+    sleep 30
     curl --socks5 127.0.0.1:2323 http://www.vpngate.net/api/iphone/ --silent --output ./tmp/server_list.csv
 fi
 
@@ -74,9 +75,9 @@ if [[ -f "./tmp/server_list.csv" ]]; then
 
                 echo "$base64_vpn" | base64 -di | tee /usr/local/bin/TorNet/source/server.ovpn 1 &>/dev/null
 
-                pkexec env DISPLAY="$DISPLAY" XAUTHORITY="$XAUTHORITY" bash /usr/local/bin/TorNet/scripts/vpngate_select.sh &
+                pkexec bash /usr/local/bin/TorNet/scripts/vpngate_select.sh &
 
-                sleep 12 | zenity --window-icon="$icon" --progress --pulsate --title="Connect" --text="Run .. ." --no-cancel --width=300 --auto-close --auto-kill
+                sleep 12 | zenity --window-icon="$icon" --progress --pulsate --title="Connect" --text="Run openvpn  .. ." --no-cancel --width=300 --auto-close --auto-kill
 
                 if grep -q "Initialization Sequence Completed" /usr/local/bin/TorNet/tmp/vpn.log; then
                     zenity --info --window-icon="$icon" --text="Initialization Sequence Completed"
