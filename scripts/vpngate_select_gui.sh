@@ -77,7 +77,7 @@ if [[ -f "./tmp/server_list.csv" ]]; then
 
                 pkexec bash /usr/local/bin/TorNet/scripts/vpngate_select.sh &
 
-                sleep 12 | zenity --window-icon="$icon" --progress --pulsate --title="Connect" --text="Run openvpn  .. ." --no-cancel --width=300 --auto-close --auto-kill
+                sleep 15 | zenity --window-icon="$icon" --progress --pulsate --title="Connect" --text="Run openvpn  .. ." --no-cancel --width=300 --auto-close --auto-kill
 
                 if grep -q "Initialization Sequence Completed" /usr/local/bin/TorNet/tmp/vpn.log; then
                     zenity --info --window-icon="$icon" --text="Initialization Sequence Completed"

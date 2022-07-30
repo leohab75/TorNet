@@ -52,7 +52,7 @@ function vpngate_stop() {
 }
 
 function vpngate_select() {
-    killall tor 2 &>/dev/null
+
     bash /usr/local/bin/TorNet/scripts/vpngate_select_gui.sh
 
 }
@@ -75,10 +75,17 @@ function status_client() {
 
     IP=""
     IP=$(wget -qO- eth0.me)
-    Socks_IP=""
-    Socks_IP=$(curl --socks5 127.0.0.1:2323 http://eth0.me)
+
+    if [[ -n $(pidof snowflake-client) ]]; then
+        Socks_IP=""
+        Socks_IP=$(curl --socks5 127.0.0.1:2323 http://eth0.me)
+    else
+        Socks_IP="Disabled proxy socks5"
+    fi
+
     hoster=""
     hoster=$(curl ifconfig.io/host)
+
     _Cloudflared_=""
     _Cloudflared_=$(systemctl status cloudflared-proxy-dns.service | grep $HOSTNAME | awk 'NR == 1' | cut -f 7- -d " ")
 
@@ -116,7 +123,7 @@ function proxy_socks() {
         )
         tor -f torrc &
 
-        sleep 30 | zenity --window-icon="$icon" --progress --pulsate --title="Connect" --text="Подождите 30 сек....." --no-cancel --width=300 --auto-close --auto-kill
+        sleep 30 | zenity --window-icon="$icon" --progress --pulsate --title="Connect" --text="Connect proxy-socks ... " --no-cancel --width=300 --auto-close --auto-kill
     fi
 
     TorSocs=$(netstat -anlutp | grep -i "2323" | awk 'NR == 1 {print $4}')
@@ -156,11 +163,11 @@ case "$1" in
     status_client
     ;;
 "speedtest")
-    /usr/local/bin/TorNet/speedtest/speedtest | sed  '/^$/d; 10d' | tee /usr/local/bin/TorNet/tmp/speedtest | zenity --window-icon="$icon" --progress --pulsate --title="Connect" --text="Speedtest ..   ... ." --no-cancel --width=300 --auto-close --auto-kill
-    zenity --info --title="Speedtest" --window-icon="$icon" --text="$(cat /usr/local/bin/TorNet/tmp/speedtest | while read line ; do echo $line; done)" --width=300
-
+    /usr/local/bin/TorNet/speedtest/speedtest | sed '/^$/d; 10d' | tee /usr/local/bin/TorNet/tmp/speedtest | zenity --window-icon="$icon" --progress --pulsate --title="Connect" --text="Speedtest ..   ... ." --no-cancel --width=300 --auto-close --auto-kill
+    zenity --info --title="Speedtest" --window-icon="$icon" --text="$(cat /usr/local/bin/TorNet/tmp/speedtest | while read line; do echo $line; done)" --width=300
 
     ;;
+
 "Gui")
 
     bash /usr/local/bin/TorNet/scripts/TorNet_Gui.sh
