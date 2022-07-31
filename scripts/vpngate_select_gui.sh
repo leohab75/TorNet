@@ -55,7 +55,7 @@ if [[ -f "./tmp/server_list.csv" ]]; then
             cat ./tmp/server_list.csv | grep -i "$select_server" | awk '{print $1}' | cut -f 3 -d "," | tee ./tmp/_Score_ 1 &>/dev/null
 
             Hostname_server=$(zenity --list --radiolist --window-icon="$icon" --title="servers: $select_server" --text="Активные сервера: $select_server  \n Всего $enabled_servers" \
-                --column="Use" --column="Hostname" --column="~Speed Mb" --column="Session" --column="Score" --column="Code" --column="Flag" \
+                --column="Use" --column="Hostname" --column="~Speed Mb" --column="Session" --column="Score" --column="Code" --column="Flag" --column="choice" \
                 $(for ((i = 0; i < $enabled_servers; i++)); do
                     echo -e "$(cat ./tmp/_Hostname_ | sed -n '1p')"
                     echo -e "$(cat ./tmp/_Hostname_ | sed -n '1p')"
@@ -63,21 +63,28 @@ if [[ -f "./tmp/server_list.csv" ]]; then
                     echo -e "$(cat ./tmp/_Ping_ | sed -n '1p')"
                     echo -e "$(cat ./tmp/_Score_ | sed -n '1p')"
                     echo -e "$(bash /usr/local/bin/TorNet/scripts/country_flags.sh $code)"
+                    hoster=$(cat ./tmp/_Hostname_ | sed -n '1p')
+                    echo -e "$(bash /usr/local/bin/TorNet/scripts/vpngate_check.sh sort $hoster )"
                     sed -i '1d' ./tmp/_Hostname_
                     sed -i '1d' ./tmp/_Ping_
                     sed -i '1d' ./tmp/_Score_
                     sed -i '1d' ./tmp/_Speed_
-                done) --height=600 --width=500)
+                done) --height=600 --width=600)
 
             if [[ "$?" == "0" && "$Hostname_server" != "" ]]; then
+
+                echo -e "$Hostname_server" | tee /usr/local/bin/TorNet/tmp/_Hoster_ 1&>/dev/null
 
                 base64_vpn=$(cat ./tmp/server_list.csv | grep -i "$Hostname_server" | awk '{print $1}' | cut -f 15 -d ",")
 
                 echo "$base64_vpn" | base64 -di | tee /usr/local/bin/TorNet/source/server.ovpn 1 &>/dev/null
 
-                pkexec bash /usr/local/bin/TorNet/scripts/vpngate_select.sh &
+                #pkexec bash /usr/local/bin/TorNet/scripts/vpngate_select.sh &
 
-                sleep 15 | zenity --window-icon="$icon" --progress --pulsate --title="Connect" --text="Run openvpn  .. ." --no-cancel --width=300 --auto-close --auto-kill
+                (for ((i = 1; i <= 15; i++)); do
+                    echo -e "# connect Vpn Gate ... $i сек (15)"
+                    sleep 1
+                done) | zenity --window-icon="$icon" --progress --pulsate --title="Connect" --no-cancel --width=300 --auto-close --auto-kill
 
                 if grep -q "Initialization Sequence Completed" /usr/local/bin/TorNet/tmp/vpn.log; then
                     zenity --info --window-icon="$icon" --text="Initialization Sequence Completed"

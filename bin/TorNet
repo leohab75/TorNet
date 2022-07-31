@@ -66,7 +66,10 @@ function redsocks_tor() {
         )
         tor -f torrc &
 
-        sleep 30 | zenity --window-icon="$icon" --progress --pulsate --title="Connect" --text="connect proxy ..." --no-cancel --width=300 --auto-close --auto-kill
+        (for ((i = 1; i <= 30; i++)); do
+            echo -e "# connect proxy-socks ... $i сек (30)"
+            sleep 1
+        done) | zenity --window-icon="$icon" --progress --pulsate --title="Connect" --no-cancel --width=300 --auto-close --auto-kill
     fi
     pkexec bash /usr/local/bin/TorNet/scripts/redsocks.sh "$1"
 }
@@ -123,7 +126,10 @@ function proxy_socks() {
         )
         tor -f torrc &
 
-        sleep 30 | zenity --window-icon="$icon" --progress --pulsate --title="Connect" --text="Connect proxy-socks ... " --no-cancel --width=300 --auto-close --auto-kill
+        (for ((i = 1; i <= 30; i++)); do
+            echo -e "# connect proxy-socks ... $i сек (30)"
+            sleep 1
+        done) | zenity --window-icon="$icon" --progress --pulsate --title="Connect" --no-cancel --width=300 --auto-close --auto-kill
     fi
 
     TorSocs=$(netstat -anlutp | grep -i "2323" | awk 'NR == 1 {print $4}')
