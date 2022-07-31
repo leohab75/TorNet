@@ -1,22 +1,32 @@
 #!/usr/bin/env bash
 
 icon="/usr/local/bin/TorNet/source/icons/TorNet.png"
-hoster=$(cat /usr/local/bin/TorNet/tmp/_Hoster_)
+host_name=$(cat /usr/local/bin/TorNet/tmp/_Hoster_)
 
 if [[ $1 == "choice" ]]; then
     choice=$(zenity --list --radiolist --window-icon="$icon" --title="Add to favorites server" --text="Только для текущего соединения:" --column="🔆" --column="choice" --column="Действие" FALSE "white" "добавить в белый список" \
-      FALSE "black" "добавить в черный список" FALSE "clean" "отчистить списки" --hide-column="2" --height=200 --width=400)
+        FALSE "black" "добавить в черный список" FALSE "clean" "отчистить списки" --hide-column="2" --height=200 --width=400)
 
     if [[ "$?" == "0" ]]; then
 
+        line="$(cat /usr/local/bin/TorNet/tmp/_Hoster_ | grep -i "$host_name" | awk '{print NR}')"
+
         if [[ "$choice" == "white" ]]; then
 
-            echo -e "$hoster" >>/usr/local/bin/TorNet/tmp/white_list
+            if [[ -n $line ]]; then
+                tail -n $line /usr/local/bin/TorNet/tmp/black_list | wc -c | xargs -I {} truncate "/usr/local/bin/TorNet/tmp/black_list" -s -{}
+            fi
+
+            echo -e "$host_name" >>/usr/local/bin/TorNet/tmp/white_list
             sed -i '$!N; /^\(.*\)\n\1$/!P; D' /usr/local/bin/TorNet/tmp/white_list
 
         elif [[ "$choice" == "black" ]]; then
 
-            echo -e "$hoster" >>/usr/local/bin/TorNet/tmp/black_list
+            if [[ -n $line ]]; then
+                tail -n $line /usr/local/bin/TorNet/tmp/white_list | wc -c | xargs -I {} truncate "/usr/local/bin/TorNet/tmp/white_list" -s -{}
+            fi
+
+            echo -e "$host_name" >>/usr/local/bin/TorNet/tmp/black_list
             sed -i '$!N; /^\(.*\)\n\1$/!P; D' /usr/local/bin/TorNet/tmp/black_list
 
         else
