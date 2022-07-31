@@ -64,7 +64,7 @@ if [[ -f "./tmp/server_list.csv" ]]; then
                     echo -e "$(cat ./tmp/_Score_ | sed -n '1p')"
                     echo -e "$(bash /usr/local/bin/TorNet/scripts/country_flags.sh $code)"
                     hoster=$(cat ./tmp/_Hostname_ | sed -n '1p')
-                    echo -e "$(bash /usr/local/bin/TorNet/scripts/vpngate_check.sh sort $hoster )"
+                    echo -e "$(bash /usr/local/bin/TorNet/scripts/vpngate_check.sh sort $hoster)"
                     sed -i '1d' ./tmp/_Hostname_
                     sed -i '1d' ./tmp/_Ping_
                     sed -i '1d' ./tmp/_Score_
@@ -73,13 +73,13 @@ if [[ -f "./tmp/server_list.csv" ]]; then
 
             if [[ "$?" == "0" && "$Hostname_server" != "" ]]; then
 
-                echo -e "$Hostname_server" | tee /usr/local/bin/TorNet/tmp/_Hoster_ 1&>/dev/null
+                echo -e "$Hostname_server" | tee /usr/local/bin/TorNet/tmp/_Hoster_ 1 &>/dev/null
 
                 base64_vpn=$(cat ./tmp/server_list.csv | grep -i "$Hostname_server" | awk '{print $1}' | cut -f 15 -d ",")
 
                 echo "$base64_vpn" | base64 -di | tee /usr/local/bin/TorNet/source/server.ovpn 1 &>/dev/null
 
-                #pkexec bash /usr/local/bin/TorNet/scripts/vpngate_select.sh &
+                pkexec bash /usr/local/bin/TorNet/scripts/vpngate_select.sh &
 
                 (for ((i = 1; i <= 15; i++)); do
                     echo -e "# connect Vpn Gate ... $i сек (15)"
@@ -90,13 +90,13 @@ if [[ -f "./tmp/server_list.csv" ]]; then
                     zenity --info --window-icon="$icon" --text="Initialization Sequence Completed"
                 elif grep -q "Options error: unknown --redirect-gateway flag: def" /usr/local/bin/TorNet/tmp/vpn.log; then
                     zenity --error --window-icon="$icon" --text="Options error: unknown --redirect-gateway flag: def"
-                    TorNet 'select vpn'
+
                 elif grep -q "AUTH: Received control message: AUTH_FAILED" /usr/local/bin/TorNet/tmp/vpn.log; then
                     zenity --error --window-icon="$icon" --text="AUTH: Received control message: AUTH_FAILED"
-                    TorNet 'select vpn'
+
                 else
                     zenity --error --window-icon="$icon" --text="ERROR \n Connect is failed -def"
-                    TorNet 'select vpn'
+
                 fi
             else
                 exit 1
