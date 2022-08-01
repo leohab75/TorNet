@@ -12,7 +12,7 @@ if [[ $? = "0" ]]; then
     while true; do
 
         dns_servers_chois=$(zenity --window-icon="$icon" --title="Delete options" --text="Какой DNS resoler оставить ?" --list --radiolist \
-            --column="Use" --column="key" --column="Описание" --hide-column=2 TRUE cloudflared_dns "Оставить Clouflared DoH client => 127.0.0.1:53" \
+            --column="🔆" --column="key" --column="Описание" --hide-column=2 TRUE cloudflared_dns "Оставить Clouflared DoH client => 127.0.0.1:53" \
             FALSE systemd_dns "Включить   Systemd-resolver => 127.0.0.53:53" \
             FALSE users_dns "Указать свои DNS Сервера => resolv.conf" --height=300 --width=400)
 

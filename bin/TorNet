@@ -45,18 +45,6 @@ function TorNet_tray() {
 
 }
 
-function vpngate_stop() {
-
-    pkexec bash /usr/local/bin/TorNet/scripts/vpngate_stop.sh
-
-}
-
-function vpngate_select() {
-
-    bash /usr/local/bin/TorNet/scripts/vpngate_select_gui.sh
-
-}
-
 function redsocks_tor() {
 
     if [[ -z $(pidof snowflake-client) ]]; then
@@ -137,7 +125,7 @@ function proxy_socks() {
         zenity --warning --window-icon="$icon" --title="Socks5" --text="Неудалось подключится ... ¯\_(ツ)_/¯\n    ...попробуйте позже " --height=200 --width=300
     else
 
-        zenity --info --window-icon="$icon" --title="Socks5" --text="Укажите в настройках вашего браузера:\n Настройки => настройки сети\n => ручная настройка\n socks5 $TorSocs" --height=200 --width=350
+        zenity --notification --title="Socks5" --text="Укажите в настройках вашего браузера:\n Настройки => настройки сети\n => ручная настройка\n socks5 $TorSocs" --height=200 --width=350
     fi
 
 }
@@ -145,11 +133,11 @@ function proxy_socks() {
 case "$1" in
 
 "select vpn")
-    vpngate_select
+    bash /usr/local/bin/TorNet/scripts/vpngate_select_gui.sh
     TorNet_tray
     ;;
 "vpn stop")
-    vpngate_stop
+    pkexec bash /usr/local/bin/TorNet/scripts/vpngate_stop.sh
     TorNet_tray
     ;;
 "start tor")

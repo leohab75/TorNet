@@ -6,6 +6,7 @@ echo "$_User_  ALL=(ALL) NOPASSWD: ALL" | tee /etc/sudoers.d/TorNet_no_passwd
 
 sed -i 's/pkexec/sudo/g' /usr/bin/TorNet
 sed -i 's/pkexec/sudo/g' /usr/local/bin/TorNet/scripts/vpngate_select_gui.sh
+sed -i 's/pkexec/sudo/g' /usr/local/bin/TorNet/scripts/vpngate_check.sh
 
 #finish
 exit 0

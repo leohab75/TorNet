@@ -43,7 +43,7 @@ if [[ -n $(grep -i "ubuntu" /etc/os-release) ]]; then
 
     icon="/usr/local/bin/TorNet/source/icons/TorNet.png"
     check_list=$(zenity --window-icon="$icon" --title="Optins" --text="Почти готово ..." --list --checklist --separator=" " \
-        --column="Use" --column="key" --column="Описание" --hide-column=2 TRUE add_tray "Добавить TorNet в автозагрузку ??." \
+        --column="🔆" --column="key" --column="Описание" --hide-column=2 TRUE add_tray "Добавить TorNet в автозагрузку ??." \
         TRUE no_passwd "Отключить ввод пароля ..." --height=185 --width=350)
 
     if [[ $? = "0" ]]; then

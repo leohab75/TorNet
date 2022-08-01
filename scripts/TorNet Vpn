@@ -21,6 +21,8 @@ def on_clicked(icon, item):
         os.system("bash /usr/bin/TorNet 'select vpn'")
     elif str(item) == "Add to favorite":
         os.system("bash /home/hdd/TorNet/scripts/vpngate_check.sh 'choice'")
+    elif str(item) == "Favorite":
+        os.system("bash /home/hdd/TorNet/scripts/vpngate_check.sh 'saved'")
     elif str(item) == "Stop all Vpn":
         os.system("bash /usr/bin/TorNet 'vpn stop'")
     elif str(item) == "Start Tor":
@@ -42,6 +44,7 @@ Icon = pystray.Icon("TorNet", image, menu=pystray.Menu(
     pystray.MenuItem("VPN", pystray.Menu(
         pystray.MenuItem("Start Vpn Select", on_clicked),
         pystray.MenuItem("Add to favorite", on_clicked),
+        pystray.MenuItem("Favorite", on_clicked),
         pystray.MenuItem("Stop all Vpn", on_clicked))),
     pystray.MenuItem("Tor", pystray.Menu(
         pystray.MenuItem("Proxy", on_clicked),

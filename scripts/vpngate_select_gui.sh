@@ -27,7 +27,7 @@ if [[ -f "./tmp/server_list.csv" ]]; then
     for i in $(cat ./tmp/tmp_Country_name); do grep "$i" ./tmp/server_list.csv | wc -l >>./tmp/tmp_Country_node; done
 
     select_server=$(zenity --list --radiolist --window-icon="$icon" --title="vpngate best servers" --text="Активные сервера: \
-Всего $enabled_servers" --column="Use" --column="Country" --column="Code" --column="" --column="FLAGS" --column="Кол-во" --hide-column="4" \
+Всего $enabled_servers" --column="🔆" --column="Country" --column="Code" --column="" --column="FLAGS" --column="Кол-во" --hide-column="4" \
         $(for j in $(cat ./tmp/tmp_Country_name); do
             echo -e "$(cat ./tmp/tmp_Country_name | sed -n '1p')"
             echo -e "$(cat ./tmp/tmp_Country_name | sed -n '1p' | cut -f 1 -d ,)"
@@ -55,7 +55,7 @@ if [[ -f "./tmp/server_list.csv" ]]; then
             cat ./tmp/server_list.csv | grep -i "$select_server" | awk '{print $1}' | cut -f 3 -d "," | tee ./tmp/_Score_ 1 &>/dev/null
 
             Hostname_server=$(zenity --list --radiolist --window-icon="$icon" --title="servers: $select_server" --text="Активные сервера: $select_server  \n Всего $enabled_servers" \
-                --column="Use" --column="Hostname" --column="~Speed Mb" --column="Session" --column="Score" --column="Code" --column="Flag" --column="choice" \
+                --column="🔆" --column="Hostname" --column="~Speed Mb" --column="Session" --column="Score" --column="Code" --column="Flag" --column="choice" \
                 $(for ((i = 0; i < $enabled_servers; i++)); do
                     echo -e "$(cat ./tmp/_Hostname_ | sed -n '1p')"
                     echo -e "$(cat ./tmp/_Hostname_ | sed -n '1p')"
