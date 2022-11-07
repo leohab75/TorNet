@@ -1,0 +1,60 @@
+#!/bin/bash
+
+icon="/usr/local/bin/TorNet/source/icons/TorNet.png"
+
+zenity --window-icon="$icon" --question --text="Удалить TorNet' с ПК ?? " --width=300 --height=100
+
+if [[ $? = "0" ]]; then
+
+    rm -f "HOME"/'Рабочий стол'/TorNet
+    rf -f "$HOME"/.config/autostart/TorNet.desktop 2>/dev/null
+
+    while true; do
+
+        dns_servers_chois=$(zenity --window-icon="$icon" --title="Delete options" --text="Какой DNS resoler оставить ?" --list --radiolist \
+            --column="🔆" --column="key" --column="Описание" --hide-column=2 TRUE cloudflared_dns "Оставить Clouflared DoH client => 127.0.0.1:53" \
+            FALSE systemd_dns "Включить   Systemd-resolver => 127.0.0.53:53" \
+            FALSE users_dns "Указать свои DNS Сервера => resolv.conf" --height=300 --width=400)
+
+        if [[ $? = "0" ]]; then
+
+            case $dns_servers_chois in
+
+            cloudflared_dns)
+                pkexec bash /usr/local/bin/TorNet/scripts/other/delete.sh "cloudflared"
+                break
+                ;;
+            systemd_dns)
+                pkexec bash /usr/local/bin/TorNet/scripts/other/delete.sh "systemd"
+                break
+                ;;
+            users_dns)
+
+                users_dns=$(zenity --window-icon="$icon" --entry --text="Укажите DNS сервера через запятую" --entry-text="8.8.8.8, 1.1.1.1, 9.9.9.9")
+                if [[ "$users_dns" != "" ]]; then
+
+                    echo $users_dns | tee /usr/local/bin/TorNet/users_dns
+                    sed -i 's/ //g;s/,/\n/g;' /usr/local/bin/TorNet/users_dns
+
+                    if grep -q "[0-9]" /usr/local/bin/TorNet/users_dns; then
+
+                        pkexec bash /usr/local/bin/TorNet/scripts/other/delete.sh "users"
+                    else
+                        zenity --window-icon="$icon" --error --text="должны быть  Цифры ☹ "
+
+                    fi
+                else
+                    zenity --window-icon="$icon" --error --text="Пустая строка ☹ "
+
+                fi
+                ;;
+
+            esac
+
+        else
+            break
+        fi
+    done
+fi
+#finish
+exit 0

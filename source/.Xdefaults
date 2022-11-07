@@ -1,0 +1,29 @@
+XTerm.termName: xterm-256color
+XTerm.vt100.locale: true
+
+XTerm.vt100.scrollBar: false
+
+XTerm.vt100.geometry: 80x12
+
+XTerm.vt100.reverseVideo: true
+XTerm.vt100.foreground: black
+XTerm.vt100.background: green
+XTerm.vt100.color0: rgb:28/28/28
+! ...
+XTerm.vt100.color15: rgb:e4/e4/e4
+
+XTerm.vt100.faceName: Liberation Mono:size=10:antialias=false
+XTerm.vt100.font: 9x13
+
+XTerm.vt100.bellIsUrgent: true
+
+! отключаем жирный шрифт и вместо него делаем текст синим.
+XTerm.vt100.colorBDMode: true
+XTerm.vt100.colorBD: rgb:82/a4/d3
+! отключаем подчеркнутый текст и вместо него делаем его белым.
+XTerm.vt100.colorULMode: true
+XTerm.vt100.colorUL: rgb:e4/e4/e4
+! аналогично использовать colorIT для курсива
+
+
+XTerm.scaleHeight: 1.01

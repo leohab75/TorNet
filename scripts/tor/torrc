@@ -1,0 +1,14 @@
+SocksPort 9050
+Exitpolicy reject *:*
+TransPort 9040
+VirtualAddrNetwork 10.192.0.0/10
+
+DNSPort 127.0.0.1:9053
+AutomapHostsOnResolve 1
+AutomapHostsSuffixes .onion
+
+UseBridges 1
+ClientTransportPlugin obfs4 exec /usr/local/bin/obfs4proxy managed
+%include /usr/local/bin/TorNet/scripts/tor/bridges.conf
+
+

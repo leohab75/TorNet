@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Categories=Network
+Name=Uninstall TorNet
+Comment=darknet
+Exec=/usr/bin/Uninstall_TorNet %f
+Icon=/usr/local/bin/TorNet/source/icons/TorNet.png
+Terminal=false

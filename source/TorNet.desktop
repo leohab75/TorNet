@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Categories=Network
+Name=TorNet
+Comment=darknet
+Exec=/usr/bin/TorNet "gui" %f
+Icon=/usr/local/bin/TorNet/source/icons/TorNet.png
+Terminal=false

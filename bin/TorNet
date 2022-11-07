@@ -1,0 +1,180 @@
+#!/bin/bash
+icon="/usr/local/bin/TorNet/source/icons/TorNet.png"
+TorNet="<span foreground='red' font='14'>T</span>orNet \n"
+
+export BLUE='\033[1;94m'
+export GREEN='\033[1;92m'
+export RED='\033[1;91m'
+export RESETCOLOR='\033[1;00m'
+
+if [[ "$UID" = "0" ]]; then
+    echo -e "$RED ERROR: $BLUE root user started be Tornet $RESETCOLOR\n"
+    _User_=$(cat /usr/local/bin/TorNet/_User_)
+    echo -e "\n$GREEN       <<=== fix ===>>       $RESETCOLOR\n"
+    sudo su "$_User_" /usr/bin/TorNet
+fi
+
+if [[ -z $(pidof snowflake-proxy) ]]; then
+
+    nohup /usr/local/bin/TorNet/snowflake/proxy/snowflake-proxy &
+    echo -e "$GREEN Start $BLUE snowflake-proxy $RESETCOLOR"
+
+fi
+
+function TorNet_tray() {
+
+    TorNet_tray_pid=""
+    TorNet_tray_pid=$(pgrep -f "python3 /usr/local/bin/TorNet/scripts/TorNet")
+
+    if [[ ! "$TorNet_tray_pid" == "" ]]; then
+        kill $TorNet_tray_pid
+    fi
+
+    if [[ -n $(pidof openvpn) && -n $(pidof snowflake-client) ]]; then
+        python3 "/usr/local/bin/TorNet/scripts/TorNet" "/usr/local/bin/TorNet/source/icons/TorNetV5.png" &
+    elif [[ -n $(pidof openvpn) ]]; then
+        python3 "/usr/local/bin/TorNet/scripts/TorNet" "/usr/local/bin/TorNet/source/icons/TorNetV.png" &
+    elif [[ -n $(pidof tor) ]]; then
+
+        if [[ -n $(pidof snowflake-client) ]]; then
+            python3 "/usr/local/bin/TorNet/scripts/TorNet" "/usr/local/bin/TorNet/source/icons/TorNet5.png" &
+        else
+            python3 "/usr/local/bin/TorNet/scripts/TorNet" "/usr/local/bin/TorNet/source/icons/TorNetT.png" &
+        fi
+
+    else
+        python3 "/usr/local/bin/TorNet/scripts/TorNet" "/usr/local/bin/TorNet/source/icons/TorNet.png" &
+    fi
+
+}
+
+function status_client() {
+
+    IP=""
+    IP=$(wget -qO- eth0.me)
+
+    if [[ -n $(pidof snowflake-client) ]]; then
+        Socks_IP=""
+        Socks_IP=$(curl --socks5 127.0.0.1:2323 http://eth0.me)
+    else
+        Socks_IP="Disabled proxy socks5"
+    fi
+
+    if [[ -n $(pidof tor) && -n $(pidof snowflake-client) ]]; then
+        Tor_status="<span foreground='green' font='12'>Включён</span> Snowflake"
+    elif [[ -n $(pidof tor) && ! -n $(pidof snowflake-client) ]]; then
+        Tor_status="<span foreground='green' font='12'>Включён</span> TorNat"
+    else
+        Tor_status="<span foreground='red' font='12'>Выключен</span>"
+    fi
+
+    hoster=""
+    hoster=$(curl ifconfig.io/host)
+
+    _Cloudflared_=""
+    _Cloudflared_=$(systemctl status cloudflared-proxy-dns.service | grep $HOSTNAME | awk 'NR == 1' | cut -f 7- -d " ")
+
+    if [[ -n $(echo "$_Cloudflared_" | grep -i "err") ]]; then
+
+        zenity --window-icon="$icon" --warning --text="$TorNet Ваш текущий IP адрес: $IP \n\
+                    IP через socks5: $Socks_IP  \n\
+                    Tor Status: $Tor_status
+                    \n HOSTNAME: $HOSTNAME \n \n Требуется перезапуск Cloudflared" --width=400
+
+        zenity --window-icon="$icon" --question --text="$TorNet Перезапустить Cloudflared DoH ?.." --width=300
+
+        if [[ "$?" == "0" ]]; then
+            sudo systemctl restart cloudflared-proxy-dns.service
+            sleep 2
+            TorNet 'status'
+        fi
+
+    else
+
+        zenity --window-icon="$icon" --info --window-icon="$icon" --text="$TorNet Ваш текущий IP адрес: $IP \n\
+                    IP через socks5: $Socks_IP  \n\
+                    Tor Status: $Tor_status
+                    Код страны: $(bash /usr/local/bin/TorNet/scripts/country_flags.sh) \n\
+                    Хостер: $hoster \n\
+                    HOSTNAME: $HOSTNAME \n $_Cloudflared_" --width=400
+
+    fi
+}
+
+function speedtest() {
+
+    speed=$(curl -w 'Speed: %{speed_download}\n' -s http://speedtest.tele2.net/20MB.zip -o /dev/null)
+    _ping=$(ping -c 4 -i 0.3 8.8.8.8 | tail -1 | awk '{print $4}' | cut -d '/' -f 2)
+
+    zenity --info --window-icon="$icon" --text="$TorNet \n Download [20mb] speedtest.tele2.net\n Speed: $((${speed:7} / 102400)) Mb/s \n \
+                     Ping (8.8.8.8) time: $_ping" --height=200 --width=300
+
+}
+
+case "$1" in
+
+"gui_vpn")
+    bash /usr/local/bin/TorNet/scripts/vpn/vpngate_gui.sh
+    TorNet_tray
+    ;;
+"gui_tor")
+    bash /usr/local/bin/TorNet/scripts/tor/tor_gui.sh
+    TorNet_tray
+    ;;
+"gui_proxy")
+    bash /usr/local/bin/TorNet/scripts/proxy/https_proxy.sh
+    TorNet_tray
+    ;;
+"start_tor")
+    bash /usr/local/bin/TorNet/scripts/tor/tor_start.sh
+    pkexec bash /usr/local/bin/TorNet/scripts/tor/TorNet_nat.sh 'start'
+    TorNet_tray
+    ;;
+"start_vpn")
+    bash /usr/local/bin/TorNet/scripts/vpn/vpngate_select_gui.sh
+    ;;
+"stop_tor")
+    pkexec bash /usr/local/bin/TorNet/scripts/tor/TorNet_nat.sh 'stop'
+    TorNet_tray
+    ;;
+"stop_vpn")
+    pkexec bash /usr/local/bin/TorNet/scripts/vpn/vpngate_stop.sh
+    TorNet_tray
+    ;;
+"proxy_tor")
+    bash /usr/local/bin/TorNet/scripts/tor/tor_proxy.sh
+    TorNet_tray
+    ;;
+"status")
+    status_client
+    ;;
+"speedtest")
+    speedtest
+    ;;
+"gui")
+    bash /usr/local/bin/TorNet/scripts/TorNet_Gui.sh
+    TorNet_tray
+    ;;
+
+*)
+    TorNet_tray
+
+    echo -e "$RED┌──────────────────────┬───────────────────────────────────┐$RESETCOLOR"
+    echo -e "$RED│$GREEN TorNet 'start_vpn'   $RED│$BLUE Выбрать сервер VPNGate            $RED│"
+    echo -e "$RED│$GREEN TorNet 'start_tor'   $RED│$BLUE Пропустить весь трафик через Tor  $RED│"
+    echo -e "$RED│$GREEN TorNet 'proxy_tor'   $RED│$BLUE Включить клиент Snowflake         $RED│"
+    echo -e "$RED│$GREEN TorNet 'stop_tor'    $RED│$BLUE Выключить Tor                     $RED│"
+    echo -e "$RED│$GREEN TorNet 'stop_vpn'    $RED│$BLUE Выключить VPNGate                 $RED│"
+    echo -e "$RED│$GREEN TorNet 'gui_vpn'     $RED│$BLUE gui Меню VPNGate                  $RED│"
+    echo -e "$RED│$GREEN TorNet 'gui_tor'     $RED│$BLUE gui Меню ТОР                      $RED│"
+    echo -e "$RED│$GREEN TorNet 'gui_proxy'   $RED│$BLUE HTTPs Proxy start                 $RED│"
+    echo -e "$RED│$GREEN TorNet 'speedtest'   $RED│$BLUE Проверить скорость соединения     $RED│"
+    echo -e "$RED│$GREEN TorNet 'status'      $RED│$BLUE показать IP                       $RED│"
+    echo -e "$RED├──────────────────────┼───────────────────────────────────┤$RESETCOLOR"
+    echo -e "$RED│$GREEN TorNet 'gui'         $RED│$BLUE Запустить графическое меню        $RED│"
+    echo -e "$RED└──────────────────────┴───────────────────────────────────┘\n$RESETCOLOR"
+
+    ;;
+esac
+
+exit 0
