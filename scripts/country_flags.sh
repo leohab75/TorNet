@@ -505,13 +505,15 @@ function getFlags() {
     fi
 }
 
+country_code=$1
+
 if [[ "$1" == "" ]]; then
 
     country_code=$(curl ifconfig.io/country_code)
 
     getFlags "$country_code"
 else
-    country_code=$1
+    
     getFlags "$country_code"
 fi
 
