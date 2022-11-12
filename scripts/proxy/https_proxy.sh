@@ -10,7 +10,7 @@ zenity --notification --text="TorNet \n HTTPs PROXY"
 choice=$(zenity --list --radiolist --window-icon="$icon" --title="Proxy https://" --text="$TorNet \n HTTPS PROXY" --column="🔆" --column="PROXY:PORT" \
     --column="code" --column="flag" "true" "UPDATE" "proxy" "list" $(for i in $(cat output.txt);
     do
-        country_code=$(curl  -m 30 -x "$i" -L ifconfig.io/country_code)
+        country_code=$(curl  -m 5 -x "$i" ifconfig.io/country_code)
         echo -en "false $i $(bash /usr/local/bin/TorNet/scripts/country_flags.sh $country_code) \n"
     done) --width=350 --height=450)
 
@@ -24,14 +24,14 @@ if [[ "$?" == "0" ]]; then
 
         python3 /usr/local/bin/TorNet/scripts/proxy/proxyScraper.py -p https
 
-        (python3 /usr/local/bin/TorNet/scripts/proxy/proxyChecker.py -p https -t 20 -s google.com -l output.txt) | zenity --progress --title="Check proxy" \
+        (python3 /usr/local/bin/TorNet/scripts/proxy/proxyChecker.py -p https -t 10 -s google.com -l output.txt) | zenity --progress --title="Check proxy" \
             --pulsate --text="$TorNet" --auto-kill --auto-close --no-cancel --width=450 --height=100
 
         all_proxy=$(wc -l output.txt)
 
         buff=$(zenity --list --radiolist --window-icon="$icon" --title="Proxy https://" --text="$TorNet \n Всего: $all_proxy \n " \
             --column="🔆" --column="PROXY:PORT" --column="code" --column="flag" $(for i in $(cat output.txt); do
-                country_code=$(curl -s -x "$i" -L ifconfig.io/country_code)
+                country_code=$(curl  -x "$i" -m 5  ifconfig.io/country_code)
                 echo -en "false $i $(bash /usr/local/bin/TorNet/scripts/country_flags.sh $country_code) \n"
             done) --width=350 --height=450)
 
