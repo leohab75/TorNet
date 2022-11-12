@@ -24,7 +24,7 @@ if [[ "$?" == "0" ]]; then
 
         python3 /usr/local/bin/TorNet/scripts/proxy/proxyScraper.py -p https
 
-        (python3 /usr/local/bin/TorNet/scripts/proxy/proxyChecker.py -p https -t 30 -s google.com -l output.txt) | zenity --progress --title="Check proxy" \
+        (python3 /usr/local/bin/TorNet/scripts/proxy/proxyChecker.py -p https -t 20 -s google.com -l output.txt) | zenity --progress --title="Check proxy" \
             --pulsate --text="$TorNet" --auto-kill --auto-close --no-cancel --width=450 --height=100
 
         all_proxy=$(wc -l output.txt)

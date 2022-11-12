@@ -73,9 +73,6 @@ else
     sed -i 's/debian-to/tor/g' /usr/local/bin/TorNet/scripts/tor/TorNet_nat.sh
 fi
 
-zenity --window-icon="$icon" --info --title="TorNet" --text="Желательно дождаться конца загрузки, \n а окно Xterm можно будет закрыть" --width=300
-bash /usr/local/bin/TorNet/scripts/tor/tor_proxy.sh
-
 #completion
 source /etc/bash_completion.d/TorNet
 
