@@ -110,7 +110,7 @@ EOF
 mv /tmp/TorNet/source/TorNet /etc/bash_completion.d/TorNet
 source   /etc/bash_completion.d/TorNet
 
-
+systemctl disable tor
 # echo -e "\n$GREEN включение сервиса Тор\n$RESETCOLOR"
 # systemctl enable tor
 # systemctl start tor
