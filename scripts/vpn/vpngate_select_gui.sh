@@ -84,21 +84,23 @@ if [[ -f "./tmp/server_list.csv" ]]; then
 
                 pkexec bash /usr/local/bin/TorNet/scripts/vpn/vpngate_select.sh
 
-                sleep 10
+                sleep 15
 
-                if grep -q "Connection successfully activated" /usr/local/bin/TorNet/tmp/vpn.log; then
+                TorNet ""
+                
+                # if grep -q "Connection successfully activated" /usr/local/bin/TorNet/tmp/vpn.log; then
 
                   
 
-                    zenity --info --window-icon="$icon" --text="$TorNet\n VPNGate $Hostname_server\n Initialization Sequence Completed" --height=200 --width=300
-                    killall tor
-                    TorNet ""
+                #     zenity --info --window-icon="$icon" --text="$TorNet\n VPNGate $Hostname_server\n Initialization Sequence Completed" --height=200 --width=300
+                #     killall tor
+                #     TorNet ""
 
-                else
-                    zenity --info --window-icon="$icon" --text="$TorNet\n VPNGate $Hostname_server\n ERROR " --height=200 --width=300
-                    TorNet ""
+                # else
+                #     zenity --info --window-icon="$icon" --text="$TorNet\n VPNGate $Hostname_server\n ERROR " --height=200 --width=300
+                #     TorNet ""
 
-                fi
+                # fi
 
             else
                 exit 1
