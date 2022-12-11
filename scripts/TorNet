@@ -18,7 +18,7 @@ def on_clicked(icon, item):
     elif str(item) == "Proxy Tor":
         os.system("bash /usr/bin/TorNet 'proxy_tor'")
     elif str(item) == "Start Vpn Select":
-        os.system("bash /usr/bin/TorNet 'gui_vpn'")
+        os.system("bash /usr/local/bin/TorNet/scripts/vpn/vpngate_select_gui.sh")
     elif str(item) == "Add to favorite":
         os.system("bash /usr/local/bin/TorNet/scripts/vpn/vpngate_check.sh 'choice'")
     elif str(item) == "Favorite":
