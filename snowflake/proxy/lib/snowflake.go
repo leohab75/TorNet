@@ -7,7 +7,7 @@ will be set to the defined defaults.
 
 	proxy := snowflake_proxy.SnowflakeProxy{
 		BrokerURL: "https://snowflake-broker.example.com",
-		STUNURL: "stun:stun.stunprotocol.org:3478",
+		STUNURL: "stun:stun.l.google.com:19302",
 		// ...
 	}
 
@@ -57,7 +57,7 @@ const DefaultNATProbeURL = "https://snowflake-broker.torproject.net:8443/probe"
 
 const DefaultRelayURL = "wss://snowflake.bamsoftware.com/"
 
-const DefaultSTUNURL = "stun:stun.stunprotocol.org:3478"
+const DefaultSTUNURL = "stun:stun.l.google.com:19302"
 const DefaultProxyType = "standalone"
 const pollInterval = 5 * time.Second
 
@@ -384,8 +384,7 @@ func (sf *SnowflakeProxy) makePeerConnectionFromOffer(sdp *webrtc.SessionDescrip
 		close(dataChan)
 
 		pr, pw := io.Pipe()
-		conn := &webRTCConn{pc: pc, dc: dc, pr: pr, eventLogger: sf.EventDispatcher}
-		conn.bytesLogger = newBytesSyncLogger()
+		conn := newWebRTCConn(pc, dc, pr, sf.EventDispatcher)
 
 		dc.OnOpen(func() {
 			log.Println("OnOpen channel")
@@ -412,7 +411,7 @@ func (sf *SnowflakeProxy) makePeerConnectionFromOffer(sdp *webrtc.SessionDescrip
 					log.Printf("close with error generated an error: %v", inerr)
 				}
 			}
-			conn.bytesLogger.AddOutbound(n)
+			conn.bytesLogger.AddOutbound(int64(n))
 			if n != len(msg.Data) {
 				panic("short write")
 			}
@@ -566,7 +565,7 @@ func (sf *SnowflakeProxy) runSession(sid string) {
 func (sf *SnowflakeProxy) Start() error {
 	var err error
 
-	log.Println("starting")
+	sf.EventDispatcher.OnNewSnowflakeEvent(event.EventOnProxyStarting{})
 	sf.shutdown = make(chan struct{})
 
 	// blank configurations revert to default
@@ -621,7 +620,7 @@ func (sf *SnowflakeProxy) Start() error {
 
 	currentNATTypeLoaded := getCurrentNATType()
 
-	log.Printf("NAT type: %s", currentNATTypeLoaded)
+	sf.EventDispatcher.OnNewSnowflakeEvent(&event.EventOnCurrentNATTypeDetermined{CurNATType: currentNATTypeLoaded})
 
 	NatRetestTask := task.Periodic{
 		Interval: sf.NATTypeMeasurementInterval,

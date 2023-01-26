@@ -10,13 +10,13 @@ fi
 
 #забираем конфиг. файл
 # wget --server-response --content-on-error=off "https://download.vpngate.jp/api/iphone/" -O ./tmp/server_list.csv
-response=$(curl -s -w  '%{http_code}\n' http://download.vpngate.jp/api/iphone/  --output ./tmp/server_list.csv)
+response=$(curl -s -w '%{http_code}\n' http://download.vpngate.jp/api/iphone/ --output ./tmp/server_list.csv)
 
- if [[ ! "$response" == "200" ]]; then
-     TorNet 'proxy_tor' &
-     sleep 30
-     curl --socks5 127.0.0.1:2323 http://www.vpngate.net/api/iphone/ --silent --output ./tmp/server_list.csv
- fi
+if [[ ! "$response" == "200" ]]; then
+    TorNet 'proxy_tor' &
+    sleep 30
+    curl --socks5 127.0.0.1:2323 http://www.vpngate.net/api/iphone/ --silent --output ./tmp/server_list.csv
+fi
 
 if [[ -f "./tmp/server_list.csv" ]]; then
 
@@ -80,29 +80,16 @@ if [[ -f "./tmp/server_list.csv" ]]; then
 
                 base64_vpn=$(cat ./tmp/server_list.csv | grep -i "$Hostname_server" | awk '{print $1}' | cut -f 15 -d ",")
 
-                echo "$base64_vpn" | base64 -di | tee /usr/local/bin/TorNet/source/server.ovpn 1 &>/dev/null
+                echo "$base64_vpn" | base64 -di | tee /usr/local/bin/TorNet/source/TorNet.ovpn 1 &>/dev/null
 
                 pkexec bash /usr/local/bin/TorNet/scripts/vpn/vpngate_select.sh
 
                 sleep 15
 
                 TorNet ""
-                
-                # if grep -q "Connection successfully activated" /usr/local/bin/TorNet/tmp/vpn.log; then
-
-                  
-
-                #     zenity --info --window-icon="$icon" --text="$TorNet\n VPNGate $Hostname_server\n Initialization Sequence Completed" --height=200 --width=300
-                #     killall tor
-                #     TorNet ""
-
-                # else
-                #     zenity --info --window-icon="$icon" --text="$TorNet\n VPNGate $Hostname_server\n ERROR " --height=200 --width=300
-                #     TorNet ""
-
-                # fi
 
             else
+
                 exit 1
             fi
         fi

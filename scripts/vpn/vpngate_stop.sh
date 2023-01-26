@@ -1,8 +1,8 @@
 #!/bin/bash
 
 iptables-restore  <iptables.rules
-nmcli connection down server
-nmcli connection delete server
+nmcli connection down TorNet
+nmcli connection delete TorNet
 systemctl restart NetworkManager
 systemctl restart cloudflared-proxy-dns
 

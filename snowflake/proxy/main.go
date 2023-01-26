@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"log"
@@ -12,11 +13,12 @@ import (
 
 	"git.torproject.org/pluggable-transports/snowflake.git/v2/common/event"
 	"git.torproject.org/pluggable-transports/snowflake.git/v2/common/safelog"
+	"git.torproject.org/pluggable-transports/snowflake.git/v2/common/version"
 	sf "git.torproject.org/pluggable-transports/snowflake.git/v2/proxy/lib"
 )
 
 func main() {
-	capacity := flag.Uint("capacity", 0, "maximum concurrent clients")
+	capacity := flag.Uint("capacity", 0, "maximum concurrent clients (default is to accept an unlimited number of clients)")
 	stunURL := flag.String("stun", sf.DefaultSTUNURL, "STUN URL")
 	logFilename := flag.String("log", "", "log filename")
 	rawBrokerURL := flag.String("broker", sf.DefaultBrokerURL, "broker URL")
@@ -31,10 +33,16 @@ func main() {
 		"the time interval to output summary, 0s disables summaries. Valid time units are \"s\", \"m\", \"h\". ")
 	verboseLogging := flag.Bool("verbose", false, "increase log verbosity")
 	ephemeralPortsRangeFlag := flag.String("ephemeral-ports-range", "", "ICE UDP ephemeral ports range (format:\"<min>:<max>\")")
+	versionFlag := flag.Bool("version", false, "display version info to stderr and quit")
 
 	var ephemeralPortsRange []uint16 = []uint16{0, 0}
 
 	flag.Parse()
+
+	if *versionFlag {
+		fmt.Fprintf(os.Stderr, "snowflake-proxy %s", version.ConstructResult())
+		os.Exit(0)
+	}
 
 	eventLogger := event.NewSnowflakeEventDispatcher()
 
@@ -80,12 +88,12 @@ func main() {
 		AllowNonTLSRelay:       *allowNonTLSRelay,
 	}
 
-	var logOutput io.Writer = os.Stderr
+	var logOutput = ioutil.Discard
 	var eventlogOutput io.Writer = os.Stderr
 	log.SetFlags(log.LstdFlags | log.LUTC)
 
-	if !*verboseLogging {
-		logOutput = ioutil.Discard
+	if *verboseLogging {
+		logOutput = os.Stderr
 	}
 
 	if *logFilename != "" {
@@ -94,9 +102,12 @@ func main() {
 			log.Fatal(err)
 		}
 		defer f.Close()
-		logOutput = io.MultiWriter(logOutput, f)
+		if *verboseLogging {
+			logOutput = io.MultiWriter(logOutput, f)
+		}
 		eventlogOutput = io.MultiWriter(eventlogOutput, f)
 	}
+
 	if *unsafeLogging {
 		log.SetOutput(logOutput)
 	} else {
@@ -105,6 +116,8 @@ func main() {
 
 	periodicEventLogger := sf.NewProxyEventLogger(*SummaryInterval, eventlogOutput)
 	eventLogger.AddSnowflakeEventListener(periodicEventLogger)
+
+	log.Printf("snowflake-proxy %s\n", version.GetVersion())
 
 	err := proxy.Start()
 	if err != nil {
