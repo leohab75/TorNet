@@ -1,3 +1,6 @@
+#!/usr/bin/python3
+
+
 import sys, os
 from PyQt5.QtWidgets import QApplication, QMainWindow, QTabWidget, QWidget, QPushButton
 from functools import partial

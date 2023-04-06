@@ -6,7 +6,7 @@ TorNet="<span foreground='red' font='14'>T</span>orNet \n"
 if [[ $1 == "choice" ]]; then
 
     choice=$(zenity --list --radiolist --window-icon="$icon" --title="Add to favorites server" --text="$TorNet Только для текущего соединения:" --column="🔆" --column="choice" --column="Действие" FALSE "white" "добавить в белый список" \
-        FALSE "black" "добавить в черный список" --height=200 --width=400)
+        FALSE "black" "добавить в черный список" --height=300 --width=400)
 
     if [[ "$?" == "0" ]]; then
 
