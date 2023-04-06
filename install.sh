@@ -21,7 +21,7 @@ echo -e "$RESETCOLOR"
 pkexec bash /tmp/TorNet/release.sh
 
 #for tray
-python3 -m pip install --upgrade beautifulsoup4 psgtray pillow pystray
+python3 -m pip install --upgrade beautifulsoup4 psgtray pillow pystray pyqt5
 pip3 install -r /usr/local/bin/TorNet/scripts/proxy/requirements.txt
 
 echo -e "\n$GREEN*$BLUE Удаляется временный каталог \n$RESETCOLOR"
@@ -70,7 +70,7 @@ if [[ -n $(grep -i "ubuntu" /etc/os-release) ]]; then
     desktop-file-validate /usr/share/applications/TorNet.desktop
     desktop-file-validate /usr/share/applications/Uninstall_TorNet.desktop
 else
-    sed -i 's/debian-to/tor/g' /usr/local/bin/TorNet/scripts/tor/TorNet_nat.sh
+    sed -i 's/debian-tor/tor/g' /usr/local/bin/TorNet/scripts/tor/TorNet_nat.sh
 fi
 
 #completion

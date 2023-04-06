@@ -14,12 +14,7 @@ if [[ "$UID" = "0" ]]; then
     sudo su "$_User_" /usr/bin/TorNet
 fi
 
-if [[ -z $(pidof snowflake-proxy) ]]; then
 
-    nohup /usr/local/bin/TorNet/snowflake/proxy/snowflake-proxy &
-    echo -e "$GREEN Start $BLUE snowflake-proxy $RESETCOLOR"
-
-fi
 
 function TorNet_tray() {
 
@@ -113,18 +108,7 @@ function speedtest() {
 
 case "$1" in
 
-"gui_vpn")
-    bash /usr/local/bin/TorNet/scripts/vpn/vpngate_gui.sh
-    TorNet_tray
-    ;;
-"gui_tor")
-    bash /usr/local/bin/TorNet/scripts/tor/tor_gui.sh
-    TorNet_tray
-    ;;
-"gui_proxy")
-    bash /usr/local/bin/TorNet/scripts/proxy/https_proxy.sh
-    TorNet_tray
-    ;;
+
 "start_tor")
     bash /usr/local/bin/TorNet/scripts/tor/tor_start.sh
     pkexec bash /usr/local/bin/TorNet/scripts/tor/TorNet_nat.sh 'start'
@@ -152,7 +136,7 @@ case "$1" in
     speedtest
     ;;
 "gui")
-    bash /usr/local/bin/TorNet/scripts/TorNet_Gui.sh
+    python3 /usr/local/bin/TorNet/bin/TorNet_Gui.py
     TorNet_tray
     ;;
 
@@ -165,9 +149,6 @@ case "$1" in
     echo -e "$RED│$GREEN TorNet 'proxy_tor'   $RED│$BLUE Включить клиент Snowflake         $RED│"
     echo -e "$RED│$GREEN TorNet 'stop_tor'    $RED│$BLUE Выключить Tor                     $RED│"
     echo -e "$RED│$GREEN TorNet 'stop_vpn'    $RED│$BLUE Выключить VPNGate                 $RED│"
-    echo -e "$RED│$GREEN TorNet 'gui_vpn'     $RED│$BLUE gui Меню VPNGate                  $RED│"
-    echo -e "$RED│$GREEN TorNet 'gui_tor'     $RED│$BLUE gui Меню ТОР                      $RED│"
-    echo -e "$RED│$GREEN TorNet 'gui_proxy'   $RED│$BLUE HTTPs Proxy start                 $RED│"
     echo -e "$RED│$GREEN TorNet 'speedtest'   $RED│$BLUE Проверить скорость соединения     $RED│"
     echo -e "$RED│$GREEN TorNet 'status'      $RED│$BLUE показать IP                       $RED│"
     echo -e "$RED├──────────────────────┼───────────────────────────────────┤$RESETCOLOR"
