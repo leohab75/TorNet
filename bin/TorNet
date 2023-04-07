@@ -14,8 +14,6 @@ if [[ "$UID" = "0" ]]; then
     sudo su "$_User_" /usr/bin/TorNet
 fi
 
-
-
 function TorNet_tray() {
 
     TorNet_tray_pid=""
@@ -108,7 +106,9 @@ function speedtest() {
 
 case "$1" in
 
-
+"gui_proxy")
+    bash /usr/local/bin/TorNet/scripts/proxy/https_proxy.sh
+    ;;
 "start_tor")
     bash /usr/local/bin/TorNet/scripts/tor/tor_start.sh
     pkexec bash /usr/local/bin/TorNet/scripts/tor/TorNet_nat.sh 'start'

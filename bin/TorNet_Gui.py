@@ -1,10 +1,9 @@
 #!/usr/bin/python3
 
-
 import sys, os
 from PyQt5.QtWidgets import QApplication, QMainWindow, QTabWidget, QWidget, QPushButton
 from functools import partial
-
+from PyQt5.QtGui import QIcon
  
 
 
@@ -12,6 +11,10 @@ from functools import partial
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
+
+
+        self.setWindowIcon(QIcon('/usr/local/bin/TorNet/source/icons/TorNet.png'))  
+
 
         # Set window properties
         self.setWindowTitle("TorNet")
@@ -83,23 +86,25 @@ class MainWindow(QMainWindow):
             print("no implementation.. !!")
 
 
-StyleSheet = '''
-QTabWidget {
-    background-color: green;
-}
-QTabWidget::pane {
-    border: 1px solid #31363B;
-    padding: 2px;
-    margin:  0px;
-}
-QTabBar {
-    border: 0px solid #31363B;
-    color: yellow;
-}
-QTabBar::tab:top:selected {
-    color: red;
-}
-'''
+
+
+        self.StyleSheet = '''
+        QTabWidget {
+            background-color: green;
+        }
+        QTabWidget::pane {
+            border: 1px solid #31363B;
+            padding: 2px;
+            margin:  0px;
+        }
+        QTabBar {
+            border: 0px solid #31363B;
+            color: yellow;
+        }
+        QTabBar::tab:top:selected {
+            color: red;
+        }
+        '''
 
 
 
