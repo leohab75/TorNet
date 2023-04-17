@@ -108,6 +108,7 @@ case "$1" in
 
 "gui_proxy")
     bash /usr/local/bin/TorNet/scripts/proxy/https_proxy.sh
+    TorNet_tray
     ;;
 "start_tor")
     bash /usr/local/bin/TorNet/scripts/tor/tor_start.sh
@@ -116,6 +117,7 @@ case "$1" in
     ;;
 "start_vpn")
     bash /usr/local/bin/TorNet/scripts/vpn/vpngate_select_gui.sh
+    TorNet_tray
     ;;
 "stop_tor")
     pkexec bash /usr/local/bin/TorNet/scripts/tor/TorNet_nat.sh 'stop'

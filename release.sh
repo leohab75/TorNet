@@ -19,8 +19,6 @@ if [[ -n $(grep -i "ubuntu" /etc/os-release) ]]; then
 
     apt install zenity wget net-tools openvpn curl xclip network-manager-openvpn network-manager-openvpn-gnome network-manager-vpnc -y
     apt install pip -y || apt install python3-pip -y
-    apt install libappindicator3-1 libappindicator3-dev -y
-    apt install gir1.2-appindicator3-0.1 -y
     apt install tor torsocks -y
 
     #ставим cloudflared
@@ -41,8 +39,6 @@ elif [[ -n $(grep -i "fedora" /etc/os-release) ]]; then
     echo -e "\n$GREEN  Установка Тор и зависимостей \n$RESETCOLOR"
     dnf makecache --refresh
     dnf install tor zenity wget curl  net-tools openvpn torsocks pip xclip NetworkManager-openvpn NetworkManager-openvpn-gnome -y
-
-    dnf install libappindicator-gtk3 -y || dnf install libappindicator-gtk3-devel -y
 
     rpm -e gpg-pubkey-8e5f9a5d-*
     rpm --import https://pkg.cloudflare.com/pubkey.gpg

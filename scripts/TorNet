@@ -1,61 +1,28 @@
-
-#!/usr/bin/python3
-
-
-import os
 import sys
-import pystray
-import PIL.Image
+from PyQt5 import QtCore, QtGui, QtWidgets
 
-path = (sys.argv[1])
+class SystemTrayIcon(QtWidgets.QSystemTrayIcon):
 
-image = PIL.Image.open(path)
+    def __init__(self, icon, parent=None):
+        QtWidgets.QSystemTrayIcon.__init__(self, icon, parent)
+        menu = QtWidgets.QMenu(parent)
+        exitAction = menu.addAction("Exit")
+        self.setContextMenu(menu)
+        menu.triggered.connect(self.exit)
 
-
-def on_clicked(icon, item):
-    if str(item) == "TorNet":
-        os.system("bash /usr/bin/TorNet 'gui'")
-    elif str(item) == "Proxy Tor":
-        os.system("bash /usr/bin/TorNet 'proxy_tor'")
-    elif str(item) == "Start Vpn Select":
-        os.system("bash /usr/local/bin/TorNet/scripts/vpn/vpngate_select_gui.sh")
-    elif str(item) == "Add to favorite":
-        os.system("bash /usr/local/bin/TorNet/scripts/vpn/vpngate_check.sh 'choice'")
-    elif str(item) == "Favorite":
-        os.system("bash /usr/local/bin/TorNet/scripts/vpn/vpngate_favorite.sh")
-    elif str(item) == "Stop all Vpn":
-        os.system("bash /usr/bin/TorNet 'stop_vpn'")
-    elif str(item) == "Start Tor":
-        os.system("bash /usr/bin/TorNet 'start_tor'")
-    elif str(item) == "Stop Tor":
-        os.system("bash /usr/bin/TorNet 'stop_tor'")
-    elif str(item) == "HTTPs Proxy":
-        os.system("bash /usr/bin/TorNet 'gui_proxy'")
-    elif str(item) == "Check IP":
-        os.system("bash /usr/bin/TorNet 'status'")
-    elif str(item) == "Speedtest":
-        os.system("bash /usr/bin/TorNet 'speedtest'")
-    elif str(item) == "Exit":
-        icon.stop()
-    else:
-        print("no implementation.. !!")
+    def exit(self):
+        QtCore.QCoreApplication.exit()
 
 
-Icon = pystray.Icon("TorNet", image, menu=pystray.Menu(
-    pystray.MenuItem("TorNet", on_clicked),
-    pystray.MenuItem("VPN", pystray.Menu(
-        pystray.MenuItem("Start Vpn Select", on_clicked),
-        pystray.MenuItem("Add to favorite", on_clicked),
-        pystray.MenuItem("Favorite", on_clicked),
-        pystray.MenuItem("Stop all Vpn", on_clicked))),
-    pystray.MenuItem("Tor", pystray.Menu(
-        pystray.MenuItem("Proxy Tor", on_clicked),
-        pystray.MenuItem("Start Tor", on_clicked),
-        pystray.MenuItem("Stop Tor", on_clicked))),
-    pystray.MenuItem("HTTPs Proxy", on_clicked),
-    pystray.MenuItem("Check IP", on_clicked),
-    pystray.MenuItem("Speedtest", on_clicked),
-    pystray.MenuItem("Exit", on_clicked),
-))
+def main(image):
+    app = QtWidgets.QApplication(sys.argv)
 
-Icon.run()
+    w = QtWidgets.QWidget()
+    trayIcon = SystemTrayIcon(QtGui.QIcon(image), w)
+
+    trayIcon.show()
+    sys.exit(app.exec_())
+
+if __name__ == '__main__':
+    on=str((sys.argv[1]))
+    main(on)
