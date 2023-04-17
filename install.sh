@@ -25,8 +25,8 @@ echo -e  "[global] \\n break-system-packages = true" > "$HOME"/.config/pip/pip.c
 pkexec bash /tmp/TorNet/release.sh
 
 #for tray
-python3 -m pip install --use-pep517 beautifulsoup4 psgtray pillow pystray pyqt5 --force-reinstall
-python3 -m pip install -r /usr/local/bin/TorNet/scripts/proxy/requirements.txt
+python3 -m pip install  beautifulsoup4 psgtray pillow pystray pyqt5 --force-reinstall
+python3 -m pip install -r /usr/local/bin/TorNet/scripts/proxy/requirements.txt --force-reinstall
 
 echo -e "\n$GREEN*$BLUE Удаляется временный каталог \n$RESETCOLOR"
 rm -rf /tmp/TorNet
