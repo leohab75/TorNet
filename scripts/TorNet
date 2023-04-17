@@ -1,4 +1,4 @@
-import sys
+import sys, os
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 class SystemTrayIcon(QtWidgets.QSystemTrayIcon):
@@ -6,12 +6,13 @@ class SystemTrayIcon(QtWidgets.QSystemTrayIcon):
     def __init__(self, icon, parent=None):
         QtWidgets.QSystemTrayIcon.__init__(self, icon, parent)
         menu = QtWidgets.QMenu(parent)
-        exitAction = menu.addAction("Exit")
+        menu.addAction("TorNet")
         self.setContextMenu(menu)
-        menu.triggered.connect(self.exit)
+        menu.triggered.connect(self.TorNet)
 
-    def exit(self):
-        QtCore.QCoreApplication.exit()
+    def TorNet(self):
+        os.system("TorNet gui")
+        #QtCore.QCoreApplication.exit()
 
 
 def main(image):
