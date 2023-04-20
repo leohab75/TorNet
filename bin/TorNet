@@ -7,6 +7,10 @@ export GREEN='\033[1;92m'
 export RED='\033[1;91m'
 export RESETCOLOR='\033[1;00m'
 
+#включаем venv python
+source /usr/local/bin/TorNet/TorNet/bin/activate
+
+#проверям рут
 if [[ "$UID" = "0" ]]; then
     echo -e "$RED ERROR: $BLUE root user started be Tornet $RESETCOLOR\n"
     _User_=$(cat /usr/local/bin/TorNet/_User_)
@@ -160,4 +164,6 @@ case "$1" in
     ;;
 esac
 
+#выключае venv python
+deactivate
 exit 0

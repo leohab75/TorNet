@@ -17,16 +17,22 @@ echo -e "install TorNet for$BLUE USER: $RED"
 echo -e "$USER" | tee /tmp/TorNet/_User_
 echo -e "$RESETCOLOR"
 
-#fix pep 668 python 3.11
-cp "$HOME"/.config/pip/pip.conf "$HOME"/.config/pip/pip.conf.back
-echo -e  "[global] \\n break-system-packages = true" > "$HOME"/.config/pip/pip.conf
-
 #скрипт установки
 pkexec bash /tmp/TorNet/release.sh
 
+#согласно pep 688
+cd /usr/local/bin/TorNet/ || echo "$RED ERR: $BLUE могут быть проблемы с зависимостями python $RESETCOLOR"
+python3 -m venv TorNet
+source TorNet/bin/activate
+
+pip install --upgrade pip wheel
+
 #for tray
-python3 -m pip install  beautifulsoup4 psgtray pillow pystray pyqt5 --force-reinstall
-python3 -m pip install -r /usr/local/bin/TorNet/scripts/proxy/requirements.txt --force-reinstall
+python3 -m pip install beautifulsoup4 pyqt5
+#for proxy
+python3 -m pip install -r /usr/local/bin/TorNet/scripts/proxy/requirements.txt
+
+deactivate
 
 echo -e "\n$GREEN*$BLUE Удаляется временный каталог \n$RESETCOLOR"
 rm -rf /tmp/TorNet
@@ -76,14 +82,5 @@ if [[ -n $(grep -i "ubuntu" /etc/os-release) ]]; then
 else
     sed -i 's/debian-tor/tor/g' /usr/local/bin/TorNet/scripts/tor/TorNet_nat.sh
 fi
-
-
-#pep 668 
-rm -f  "$HOME"/.config/pip/pip.conf
-mv $HOME/.config/pip/pip.conf.back  "$HOME"/.config/pip/pip.conf
-
-
-#completion
-source /etc/bash_completion.d/TorNet
 
 exit 0

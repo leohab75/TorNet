@@ -17,9 +17,10 @@ if [[ -n $(grep -i "ubuntu" /etc/os-release) ]]; then
 
     echo -e "\n$GREEN  Установка Тор и зависимостей \n$RESETCOLOR"
 
-    apt install zenity wget net-tools openvpn curl xclip network-manager-openvpn network-manager-openvpn-gnome network-manager-vpnc -y
+    apt install zenity wget openvpn curl xclip network-manager-openvpn network-manager-openvpn-gnome network-manager-vpnc -y
     apt install pip -y || apt install python3-pip -y
     apt install tor torsocks -y
+    apt install python3-venv -y
 
     #ставим cloudflared
     curl https://pkg.cloudflare.com/cloudflare-main.gpg -o /usr/share/keyrings/cloudflare-main.gpg
@@ -38,7 +39,8 @@ elif [[ -n $(grep -i "fedora" /etc/os-release) ]]; then
 
     echo -e "\n$GREEN  Установка Тор и зависимостей \n$RESETCOLOR"
     dnf makecache --refresh
-    dnf install tor zenity wget curl  net-tools openvpn torsocks pip xclip NetworkManager-openvpn NetworkManager-openvpn-gnome -y
+    dnf install tor zenity wget curl openvpn torsocks pip xclip NetworkManager-openvpn NetworkManager-openvpn-gnome -y
+    dnf install python3-venv -y
 
     rpm -e gpg-pubkey-8e5f9a5d-*
     rpm --import https://pkg.cloudflare.com/pubkey.gpg
@@ -104,7 +106,7 @@ EOF
 
 #for bash completion
 mv /tmp/TorNet/source/TorNet /etc/bash_completion.d/TorNet
-source   /etc/bash_completion.d/TorNet
+source /etc/bash_completion.d/TorNet
 
 systemctl disable tor
 # echo -e "\n$GREEN включение сервиса Тор\n$RESETCOLOR"
@@ -122,8 +124,7 @@ chmod 766 /usr/bin/TorNet
 chmod 766 /usr/bin/Uninstall_TorNet
 chown "$_User_" -R /usr/local/bin/TorNet/
 
-sleep 3
-resolvconf -u
+systemctl restart NetworkManager
 
 update-desktop-database && update-icon-caches /usr/local/bin/TorNet/source/icons/TorNet.png
 exit 0
