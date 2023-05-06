@@ -22,15 +22,15 @@ pkexec bash /tmp/TorNet/release.sh
 
 #согласно pep 688
 cd /usr/local/bin/TorNet/ || echo "$RED ERR: $BLUE могут быть проблемы с зависимостями python $RESETCOLOR"
-/usr/bin/python3 -m venv venv
-# source venv/bin/activate
+python3 -m venv /usr/local/bin/TorNet/venv
+source /usr/local/bin/TorNet/venv/bin/activate
 
 pip install --upgrade pip wheel setuptools
 
 #for tray
-pip install --upgrade pystray==0.19.3 PyQt5 pillow 
+pip install pystray==0.19.3 PyQt5 pillow --force-reinstall 
 #for proxy
-pip install --upgrade  -r /usr/local/bin/TorNet/scripts/proxy/requirements.txt 
+pip install  -r /usr/local/bin/TorNet/scripts/proxy/requirements.txt 
 
 # deactivate
 

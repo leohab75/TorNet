@@ -8,7 +8,7 @@ export RED='\033[1;91m'
 export RESETCOLOR='\033[1;00m'
 
 #включаем venv python
-# source /usr/local/bin/TorNet/venv/bin/activate
+source /usr/local/bin/TorNet/venv/bin/activate
 
 #проверям рут
 if [[ "$UID" = "0" ]]; then
@@ -165,5 +165,5 @@ case "$1" in
 esac
 
 #выключае venv python
-# deactivate
+deactivate
 exit 0
