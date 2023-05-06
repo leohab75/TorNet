@@ -1,29 +1,63 @@
-import sys, os
-from PyQt5 import QtCore, QtGui, QtWidgets
 
-class SystemTrayIcon(QtWidgets.QSystemTrayIcon):
-
-    def __init__(self, icon, parent=None):
-        QtWidgets.QSystemTrayIcon.__init__(self, icon, parent)
-        menu = QtWidgets.QMenu(parent)
-        menu.addAction("TorNet")
-        self.setContextMenu(menu)
-        menu.triggered.connect(self.TorNet)
-
-    def TorNet(self):
-        os.system("TorNet gui")
-        #QtCore.QCoreApplication.exit()
+#!/usr/bin/python3
 
 
-def main(image):
-    app = QtWidgets.QApplication(sys.argv)
+import os
+import sys
+import pystray
+import PIL.Image
 
-    w = QtWidgets.QWidget()
-    trayIcon = SystemTrayIcon(QtGui.QIcon(image), w)
+path = (sys.argv[1])
 
-    trayIcon.show()
-    sys.exit(app.exec_())
+image = PIL.Image.open(path)
 
-if __name__ == '__main__':
-    on=str((sys.argv[1]))
-    main(on)
+
+def on_clicked(icon, item):
+    if str(item) == "TorNet":
+        os.system("bash /usr/bin/TorNet 'gui'")
+    elif str(item) == "Proxy Tor":
+        os.system("bash /usr/bin/TorNet 'proxy_tor'")
+    elif str(item) == "Start Vpn Select":
+        os.system("bash /usr/bin/TorNet 'start_vpn'")
+    elif str(item) == "Add to favorite":
+        os.system("bash /usr/local/bin/TorNet/scripts/vpn/vpngate_check.sh 'choice'")
+    elif str(item) == "Favorite":
+        os.system("bash /usr/local/bin/TorNet/scripts/vpn/vpngate_favorite.sh")
+    elif str(item) == "Stop all Vpn":
+        os.system("bash /usr/bin/TorNet 'stop_vpn'")
+    elif str(item) == "Start Tor":
+        os.system("bash /usr/bin/TorNet 'start_tor'")
+    elif str(item) == "Stop Tor":
+        os.system("bash /usr/bin/TorNet 'stop_tor'")
+    elif str(item) == "HTTPs Proxy":
+        os.system("bash /usr/bin/TorNet 'gui_proxy'")
+    elif str(item) == "Check IP":
+        os.system("bash /usr/bin/TorNet 'status'")
+    elif str(item) == "Speedtest":
+        os.system("bash /usr/bin/TorNet 'speedtest'")
+    elif str(item) == "Exit":
+        icon.stop()
+    else:
+        print("no implementation.. !!")
+
+
+Icon = pystray.Icon("TorNet", image, menu=pystray.Menu(
+    pystray.MenuItem("TorNet", on_clicked),
+    pystray.MenuItem("VPN", pystray.Menu(
+        pystray.MenuItem("Start Vpn Select", on_clicked),
+        pystray.MenuItem("Add to favorite", on_clicked),
+        pystray.MenuItem("Favorite", on_clicked),
+        pystray.MenuItem("Stop all Vpn", on_clicked))),
+    pystray.MenuItem("Tor", pystray.Menu(
+        pystray.MenuItem("Proxy Tor", on_clicked),
+        pystray.MenuItem("Start Tor", on_clicked),
+        pystray.MenuItem("Stop Tor", on_clicked))),
+    pystray.MenuItem("HTTPs Proxy", on_clicked),
+    pystray.MenuItem("Check IP", on_clicked),
+    pystray.MenuItem("Speedtest", on_clicked),
+    pystray.MenuItem("Exit", on_clicked),
+))
+
+Icon.run()
+Icon.stop()
+sys.exit(0)
