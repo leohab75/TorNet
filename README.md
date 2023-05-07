@@ -9,15 +9,17 @@ git clone https://github.com/leohab75/TorNet && cd TorNet/ && bash install.sh
 
 [![Typing SVG](https://readme-typing-svg.herokuapp.com?color=%2336BCF7&lines=TorNet+use+Tor+and+VPNGate)](https://git.io/typing-svg)
 
-В главном меню на вкладке интернет добавлены два ярлыка TorNet и Uninstall TorNet
+В главном меню на вкладке интернет будут добавлены два ярлыка TorNet и Uninstall TorNet
 
-TorNet gui
+GUI
 ![screen-gif](./TorNet_1.gif)
-TorNet tray
+Tray
 ![screen-gif](./TorNet_3.gif)
 
-terminal: TorNet + baah_completion
+terminal: TorNet + bash_completion
+
 ![screen-gif](./TorNet_2.gif)
 
 как это работает:
+
 https://www.youtube.com/watch?v=ORcjC_GwcMI
