@@ -16,11 +16,11 @@ class MainWindow(QMainWindow):
 
         # Set window properties
         self.setWindowTitle("TorNet")
-        self.setGeometry(100, 100, 262, 448)
+        self.setGeometry(100, 100, 260, 448)
 
         # Create tab widget
         self.tabs = QTabWidget(self)
-        self.tabs.setGeometry(10, 10, 242, 435)
+        self.tabs.setGeometry(10, 10, 240, 420)
 
         # Create tabs
         self.tab1 = QWidget()
@@ -28,9 +28,9 @@ class MainWindow(QMainWindow):
         self.tab3 = QWidget()
 
         # Add tabs to tab widget
-        self.tabs.addTab(self.tab1, f"    Tor    ")
-        self.tabs.addTab(self.tab2, f"    VPN    ")
-        self.tabs.addTab(self.tab3, f"    Other    ")
+        self.tabs.addTab(self.tab1, f"     Tor     ")
+        self.tabs.addTab(self.tab2, f"     VPN     ")
+        self.tabs.addTab(self.tab3, f"     Other    ")
 
         # Create buttons for each tab
         self.create_buttons(self.tab1, ["Start Tor", "Stop Tor", "Socks5"], 3)
@@ -96,24 +96,6 @@ class MainWindow(QMainWindow):
             os.system("bash /usr/bin/TorNet 'status' &")
         else:
             print("no implementation.. !!")
-
-        self.StyleSheet = '''
-        QTabWidget {
-            background-color: green;
-        }
-        QTabWidget::pane {
-            border: 1px solid #31363B;
-            padding: 2px;
-            margin:  0px;
-        }
-        QTabBar {
-            border: 0px solid #31363B;
-            color: yellow;
-        }
-        QTabBar::tab:top:selected {
-            color: red;
-        }
-        '''
 
 
 if __name__ == "__main__":

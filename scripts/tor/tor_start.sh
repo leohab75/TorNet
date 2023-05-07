@@ -20,8 +20,19 @@ if [[ ! -n $(pidof tor) ]]; then
 
         sleep 5
         if grep -q "Bootstrapped 100%" tor.log; then
-            zenity --notification --text="Tor Relay enabled"
-            break
+
+            sleep 10
+
+            if grep -q "Not attempting connection" tor.log; then
+
+                zenity --notification --text="Tor Relay reload"
+                TorNet stop_tor
+                TorNet start_tor
+
+            else
+                zenity --notification --text="Tor Relay enabled"
+                break
+            fi
         fi
     done
 
