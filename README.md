@@ -13,7 +13,6 @@ git clone https://github.com/leohab75/TorNet && cd TorNet/ && bash install.sh
 
 TorNet gui
 ![screen-gif](./TorNet_1.gif)
-
 TorNet tray
 ![screen-gif](./TorNet_3.gif)
 
