@@ -28,9 +28,11 @@ if [[ -n $(grep -i "ubuntu" /etc/os-release) ]]; then
     apt install python3-venv -y
 
     #ставим cloudflared
-    curl https://pkg.cloudflare.com/cloudflare-main.gpg -o /usr/share/keyrings/cloudflare-main.gpg
-    wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb
-    apt install ./cloudflared-linux-amd64.deb
+    if [[ ! -n $(dpkg -l | grep cloudflared) ]]; then
+        curl https://pkg.cloudflare.com/cloudflare-main.gpg -o /usr/share/keyrings/cloudflare-main.gpg
+        wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb
+        apt install ./cloudflared-linux-amd64.deb
+    fi
 
     dpkg --configure -a
 

@@ -12,8 +12,11 @@ git clone https://github.com/leohab75/TorNet && cd TorNet/ && bash install.sh
 В главном меню на вкладке интернет будут добавлены два ярлыка TorNet и Uninstall TorNet
 
 GUI
+
 ![screen-gif](./TorNet_1.gif)
+
 Tray
+
 ![screen-gif](./TorNet_3.gif)
 
 terminal: TorNet + bash_completion
@@ -21,5 +24,6 @@ terminal: TorNet + bash_completion
 ![screen-gif](./TorNet_2.gif)
 
 как это работает:
+  https://www.youtube.com/watch?v=ORcjC_GwcMI
 
-https://www.youtube.com/watch?v=ORcjC_GwcMI
+!если не заводится OpenVPN, то просто доустановите: https://unlix.ru/как-установить-openvpn-3-на-linux/

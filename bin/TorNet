@@ -24,7 +24,7 @@ function TorNet_tray() {
     TorNet_tray_pid=$(pgrep -f "python3 /usr/local/bin/TorNet/scripts/TorNet")
 
     if [[ ! "$TorNet_tray_pid" == "" ]]; then
-        kill $TorNet_tray_pid
+        kill $TorNet_tray_pid 2&>/dev/null
     fi
 
     if [[ -n $(pidof openvpn) && -n $(pidof snowflake-client) ]]; then
