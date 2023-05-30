@@ -19,7 +19,7 @@ if [[ -n $(grep -i "ubuntu" /etc/os-release) ]]; then
 
     apt update
 
-    apt install zenity wget openvpn curl xclip network-manager-openvpn network-manager-openvpn-gnome network-manager-vpnc -y
+    apt install zenity wget openvpn curl xclip network-manager-openvpn network-manager-openvpn-gnome network-manager-vpnc xterm -y
     apt install pip -y || apt install python3-pip -y
 
     apt-get install libayatana-appindicator3-dev -y
