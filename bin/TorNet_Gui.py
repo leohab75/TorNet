@@ -62,6 +62,54 @@ class App(QMainWindow):
         self.label.setStyleSheet(
             "background-color :  rgb(18,25,28) ; border : 1px solid rgb(47,79,71); font-size: 14px; color: rgb(0,155,118)")
 
+        self.label_tor = QLabel(self.tab_a)
+        self.label_tor.setGeometry(5, 5, 80, 45)
+        self.label_tor.setStyleSheet(
+            "background-color :  rgb(32,32,32) ; border : 1px solid rgb(32,32,32); font-size: 40px; font-family: Feena Casual; color: white")
+        self.label_tor.setText("ToR")
+
+        self.label_tor = QLabel(self.tab_a)
+        self.label_tor.setGeometry(5, 195, 200, 100)
+        self.label_tor.setStyleSheet(
+            "background-color :  rgb(32,32,32) ; border : 1px solid rgb(32,32,32); font-size: 100px; font-family: Komedy Kritters; color: rgb(205,133,63)")
+        self.label_tor.setText("GF")
+
+        self.label_vpn = QLabel(self.tab_b)
+        self.label_vpn.setGeometry(5, 5, 180, 45)
+        self.label_vpn.setStyleSheet(
+            "background-color :  rgb(32,32,32) ; border : 1px solid rgb(32,32,32); font-size: 40px; font-family: Feena Casual; color: white")
+        self.label_vpn.setText("VPN Gate")
+
+        self.label_vpn = QLabel(self.tab_b)
+        self.label_vpn.setGeometry(120, 250, 85, 50)
+        self.label_vpn.setStyleSheet(
+            "background-color :  rgb(32,32,32) ; border : 1px solid rgb(32,32,32); font-size: 50px; font-family: Komedy Kritters; color: rgb(205,133,63)")
+        self.label_vpn.setText("C")
+
+        self.label_proxy = QLabel(self.tab_c)
+        self.label_proxy.setGeometry(5, 5, 180, 50)
+        self.label_proxy.setStyleSheet(
+            "background-color :  rgb(32,32,32) ; border : 1px solid rgb(32,32,32); font-size: 40px; font-family: Feena Casual; color: white")
+        self.label_proxy.setText("Use ProXY")
+
+        self.label_proxy = QLabel(self.tab_c)
+        self.label_proxy.setGeometry(15, 195, 200, 100)
+        self.label_proxy.setStyleSheet(
+            "background-color :  rgb(32,32,32) ; border : 1px solid rgb(32,32,32); font-size: 100px; font-family: Komedy Kritters; color: rgb(205,133,63)")
+        self.label_proxy.setText("da")
+
+        self.label_other = QLabel(self.tab_d)
+        self.label_other.setGeometry(5, 5, 120, 45)
+        self.label_other.setStyleSheet(
+            "background-color :  rgb(32,32,32) ; border : 1px solid rgb(32,32,32); font-size: 40px; font-family: Feena Casual; color: white")
+        self.label_other.setText("TorNet")
+
+        self.label_other = QLabel(self.tab_d)
+        self.label_other.setGeometry(5, 195, 200, 100)
+        self.label_other.setStyleSheet(
+            "background-color :  rgb(32,32,32) ; border : 1px solid rgb(32,32,32); font-size: 100px; font-family: Komedy Kritters; color: rgb(205,133,63)")
+        self.label_other.setText("OU")
+
     def create_buttons(self, tab, text, num, dict):
         for i in range(num):
             button = QPushButton(text[i], tab)
@@ -75,7 +123,6 @@ class App(QMainWindow):
         sender = self.sender()
         text = sender.text()
         os.system('echo "Button {} clicked"'.format(text))
-
         # TOR
         if text == "Start Tor":
             run_comand = "TorNet 'start_tor'"

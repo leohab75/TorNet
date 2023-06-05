@@ -34,6 +34,14 @@ pip install  -r /usr/local/bin/TorNet/scripts/proxy/requirements.txt
 
 # deactivate
 
+#fonts
+if [[ ! -d $HOME/.fonts ]]; then
+    mkdir $HOME/.fonts
+fi
+
+cp -r "/usr/local/bin/TorNet/source/fonts/" "$HOME/.fonts"
+fc-cache -f
+
 echo -e "\n$GREEN*$BLUE Удаляется временный каталог \n$RESETCOLOR"
 rm -rf /tmp/TorNet
 
