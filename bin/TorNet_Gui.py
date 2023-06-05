@@ -1,105 +1,142 @@
 #!/usr/bin/python3
 
+
+from PyQt6.QtWidgets import *
+from PyQt6.QtGui import QIcon
 import sys
 import os
-from PyQt5.QtWidgets import QApplication, QMainWindow, QTabWidget, QWidget, QPushButton
-from functools import partial
-from PyQt5.QtGui import QIcon
 
 
-class MainWindow(QMainWindow):
+class App(QMainWindow):
+
     def __init__(self):
         super().__init__()
 
-        self.setWindowIcon(
-            QIcon('/usr/local/bin/TorNet/source/icons/TorNet.png'))
-
         # Set window properties
         self.setWindowTitle("TorNet")
-        self.setGeometry(100, 100, 260, 448)
+        self.setGeometry(100, 100, 233, 400)
 
         # Create tab widget
         self.tabs = QTabWidget(self)
-        self.tabs.setGeometry(10, 10, 240, 420)
+        self.tabs.setGeometry(5, 5, 223, 390)
 
-        # Create tabs
-        self.tab1 = QWidget()
-        self.tab2 = QWidget()
-        self.tab3 = QWidget()
+        # style
+        self.setWindowIcon(
+            QIcon('/usr/local/bin/TorNet/source/icons/TorNet.png'))
 
-        # Add tabs to tab widget
-        self.tabs.addTab(self.tab1, f"     Tor     ")
-        self.tabs.addTab(self.tab2, f"     VPN     ")
-        self.tabs.addTab(self.tab3, f"     Other    ")
+        self.tabs.setStyleSheet(
+            "background-color :  rgb(32,32,32) ; border : 1px solid rgb(47,79,79); font-size: 14px")
+
+        self.tab_a = QWidget()
+        self.tab_b = QWidget()
+        self.tab_c = QWidget()
+        self.tab_d = QWidget()
+
+        self.tabs.addTab(self.tab_a, f'Tor')
+        self.tabs.addTab(self.tab_b, f'VPN')
+        self.tabs.addTab(self.tab_c, f'Proxy')
+        self.tabs.addTab(self.tab_d, f'Other')
+
+        # self.setCentralWidget(self.tabs)
 
         # Create buttons for each tab
-        self.create_buttons(self.tab1, ["Start Tor", "Stop Tor", "Socks5"], 3)
         self.create_buttons(
-            self.tab2, ["Start VPN select", "Stop all VPN", "Favorite", "Add to favorite"], 4)
+            self.tab_a, ["Start Tor", "Stop Tor", "Tor socks5"], 3, ["Запускает Tor через NAT \n!!!изменяет iptables",
+                                                                     "Отключает Tor \n восстанавливает iptabless", "Запускает Tor Snowflake-client \nтолько socks5 proxy \nIP 127.0.0.1 Port 2323"])
         self.create_buttons(
-            self.tab3, ["TorNet", "Proxy Https", "Check IP"], 3)
+            self.tab_b, ["Start VPN select", "Stop all VPN", "Favorite", "Add to favorite"], 4, ["Подключить клиент к\n VPNGate OpenVPN \n!!!изменяет iptables -t nat",
+                                                                                                 "Выключить OpenVPN\n восстанавливает iptables", "список избранного \nвозможно подключение", "Добавить сервер в избранное \nтолько для текущего подключения"])
+        self.create_buttons(
+            self.tab_c, ["HTTPs", "HTTP", "Socks5"], 3, ["Скраббер HTTPs", "Скраббер HTTP", "Скраббер socks5 \n!!!долго думает"])
+        self.create_buttons(
+            self.tab_d, ["TorNet", "Check IP", "speedtest"], 3, ["Открывает страницу на GitHub", "Показывает информацию по текущему IP", "Проверяет скорость загрузки файла"])
 
-        self.setStyleSheet(
-            "background-image : url(/usr/local/bin/TorNet/source/icons/Icon/Tornet.png) ; border : 1px solid green")
+        self.label_text = QLabel(self)
+        self.label_text.setGeometry(20, 330, 193, 25)
+        self.label_text.setStyleSheet(
+            "background-color :  rgb(32,32,32) ; hover; font-size: 12px; color white")
+        self.label_text.setText("terminal run:")
 
-    def create_buttons(self, tab, button_names, num_buttons):
-        for i in range(num_buttons):
-            button = QPushButton(button_names[i], tab)
-            button.setGeometry(40, 50 + i*50, 150, 30)
-            button.clicked.connect(
-                partial(self.button_clicked, button.text(), tab.windowTitle(), ))
+        self.label = QLabel(self)
+        self.label.setGeometry(20, 360, 193, 25)
+        self.label.setStyleSheet(
+            "background-color :  rgb(18,25,28) ; border : 1px solid rgb(47,79,71); font-size: 14px; color: rgb(0,155,118)")
 
-    def button_clicked(self, button_name, tab_name):
-        os.system(f"echo '{button_name}' is tab '{tab_name}'")
-        if button_name == "Start Tor":
-            self.setStyleSheet(
-                "background-image : url(/usr/local/bin/TorNet/source/icons/Icon/start_tor.png) ; border : 1px solid white")
-            os.system("bash /usr/bin/TorNet 'start_tor' &")
-        elif button_name == "Stop Tor":
-            self.setStyleSheet(
-                "background-image : url(/usr/local/bin/TorNet/source/icons/Icon/stop_tor.png) ; border : 1px solid yellow")
-            os.system("bash /usr/bin/TorNet 'stop_tor' &")
-        elif button_name == "Socks5":
-            self.setStyleSheet(
-                "background-image : url(/usr/local/bin/TorNet/source/icons/Icon/socks5.png) ; border : 1px solid grey")
-            os.system("bash /usr/bin/TorNet 'proxy_tor' &")
-        elif button_name == "Start VPN select":
-            self.setStyleSheet(
-                "background-image : url(/usr/local/bin/TorNet/source/icons/Icon/start_vpn.png) ; border : 1px solid white")
-            os.system(
-                "bash /usr/local/bin/TorNet/scripts/vpn/vpngate_select_gui.sh &")
-        elif button_name == "Stop all VPN":
-            self.setStyleSheet(
-                "background-image : url(/usr/local/bin/TorNet/source/icons/Icon/stop_vpn.png) ; border : 1px solid yellow")
-            os.system("bash /usr/bin/TorNet 'stop_vpn' &")
-        elif button_name == "Favorite":
-            self.setStyleSheet(
-                "background-image : url(/usr/local/bin/TorNet/source/icons/Icon/favorite.png) ; border : 1px solid grey")
+    def create_buttons(self, tab, text, num, dict):
+        for i in range(num):
+            button = QPushButton(text[i], tab)
+            button.setGeometry(33, 60 + i*50, 150, 30)
+            button.clicked.connect(self.on_button_clicked)
+            button.setStyleSheet("QPushButton { background-color: lightblue; color: red }"
+                                 "QPushButton:pressed { background-color: purple }")
+            button.setToolTip(str(dict[i]))
+
+    def on_button_clicked(self):
+        sender = self.sender()
+        text = sender.text()
+        os.system('echo "Button {} clicked"'.format(text))
+
+        # TOR
+        if text == "Start Tor":
+            run_comand = "TorNet 'start_tor'"
+            self.label.setText(run_comand)
+            os.system(f'/bin/bash  {run_comand} &')
+        elif text == "Stop Tor":
+            run_comand = "/usr/bin/TorNet stop_tor"
+            self.label.setText(run_comand)
+            os.system(f'/bin/bash  {run_comand} &')
+        elif text == "Tor socks5":
+            run_comand = "/usr/bin/TorNet proxy_tor"
+            self.label.setText(run_comand)
+            os.system(f'/bin/bash  {run_comand} &')
+        # VPN
+        elif text == "Start VPN select":
+            run_comand = "/usr/bin/TorNet start_vpn"
+            self.label.setText(run_comand)
+            os.system(f'/bin/bash  {run_comand} &')
+        elif text == "Stop all VPN":
+            run_comand = "/usr/bin/TorNet stop_vpn"
+            self.label.setText(run_comand)
+            os.system(f'/bin/bash  {run_comand} &')
+        elif text == "Favorite":
             os.system(
                 "bash /usr/local/bin/TorNet/scripts/vpn/vpngate_favorite.sh &")
-        elif button_name == "Add to favorite":
-            self.setStyleSheet(
-                "background-image : url(/usr/local/bin/TorNet/source/icons/Icon/add_to.png) ; border : 1px solid grey")
+        elif text == "Add to favorite":
             os.system(
                 "bash /usr/local/bin/TorNet/scripts/vpn/vpngate_check.sh 'choice' &")
-        elif button_name == "TorNet":
-            self.setStyleSheet(
-                "background-image : url(/usr/local/bin/TorNet/source/icons/Icon/Tornet.png) ; border : 1px solid green")
+        # Other
+        elif text == "TorNet":
+            self.label.setText("xdg-open https://github...")
             os.system("xdg-open https://github.com/leohab75/TorNet")
-        elif button_name == "Proxy Https":
-            self.setStyleSheet(
-                "background-image : url(/usr/local/bin/TorNet/source/icons/Icon/proxy.png) ; border : 1px solid orange")
-            os.system("bash /usr/bin/TorNet 'gui_proxy' &")
-        elif button_name == "Check IP":
-            self.setStyleSheet(
-                "background-image : url(/usr/local/bin/TorNet/source/icons/Icon/check.png) ; border : 1px solid grey")
-            os.system("bash /usr/bin/TorNet 'status' &")
+        elif text == "Check IP":
+            run_comand = "/usr/bin/TorNet status"
+            self.label.setText(run_comand)
+            os.system(f'/bin/bash  {run_comand} &')
+        elif text == "speedtest":
+            run_comand = "/usr/bin/TorNet speedtest"
+            self.label.setText(run_comand)
+            os.system(f'/bin/bash  {run_comand} &')
+        # ProXY
+        elif text == "HTTP":
+            run_comand = "/usr/bin/TorNet http_proxy"
+            self.label.setText(run_comand)
+            os.system(f'/bin/bash  {run_comand} &')
+        elif text == "HTTPs":
+            run_comand = "/usr/bin/TorNet https_proxy"
+            self.label.setText(run_comand)
+            os.system(f'/bin/bash  {run_comand} &')
+        elif text == "Socks5":
+            run_comand = "/usr/bin/TorNet socks5_proxy"
+            self.label.setText(run_comand)
+            os.system(f'/bin/bash  {run_comand} &')
         else:
             print("no implementation.. !!")
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
+    import sys
     app = QApplication(sys.argv)
-    window = MainWindow()
-    window.show()
-    sys.exit(app.exec_())
+    a = App()
+    a.setStyleSheet("background-color: black;")
+    a.show()
+    sys.exit(app.exec())

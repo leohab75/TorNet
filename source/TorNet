@@ -2,7 +2,7 @@
 
 _TorNet()
 {
-  _script_commands="start_tor start_vpn stop_tor proxy_tor status speedtest gui "
+  _script_commands="start_tor start_vpn stop_tor proxy_tor status speedtest gui stop_vpn https_proxy http_proxy socks5_proxy"
 
   local cur
   COMPREPLY=()

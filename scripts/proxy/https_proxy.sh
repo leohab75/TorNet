@@ -8,7 +8,7 @@ cd /usr/local/bin/TorNet/scripts/proxy/ || exit 1
 zenity --notification --text="TorNet \n HTTPs PROXY"
 
 choice=$(zenity --list --radiolist --window-icon="$icon" --title="Proxy https://" --text="$TorNet \n HTTPS PROXY" --column="🔆" --column="PROXY:PORT" \
-    --column="code" --column="flag" "true" "UPDATE" "proxy" "list" $(for i in $(cat output.txt);
+    --column="code" --column="flag" "true" "UPDATE" "proxy" "list" $(for i in $(cat https);
     do
         country_code=$(curl  -m 5 -x "$i" ifconfig.io/country_code)
         echo -en "false $i $(bash /usr/local/bin/TorNet/scripts/country_flags.sh $country_code) \n"
@@ -18,19 +18,19 @@ if [[ "$?" == "0" ]]; then
 
     if [[ "$choice" == "UPDATE" ]]; then
 
-        if [[ -f "output.txt" ]]; then
-            rm -f output.txt
+        if [[ -f "https" ]]; then
+            rm -f https
         fi
 
-        python3 /usr/local/bin/TorNet/scripts/proxy/proxyScraper.py -p https
+        python3 /usr/local/bin/TorNet/scripts/proxy/proxyScraper.py -p https -o https
 
-        (python3 /usr/local/bin/TorNet/scripts/proxy/proxyChecker.py -p https -t 10 -s google.com -l output.txt) | zenity --progress --title="Check proxy" \
+        (python3 /usr/local/bin/TorNet/scripts/proxy/proxyChecker.py -r -p https -t 10 -s google.com -l https) | zenity --progress --title="Check proxy" \
             --pulsate --text="$TorNet" --auto-kill --auto-close --no-cancel --width=450 --height=100
 
-        all_proxy=$(wc -l output.txt)
+        all_proxy=$(wc -l https)
 
         buff=$(zenity --list --radiolist --window-icon="$icon" --title="Proxy https://" --text="$TorNet \n Всего: $all_proxy \n " \
-            --column="🔆" --column="PROXY:PORT" --column="code" --column="flag" $(for i in $(cat output.txt); do
+            --column="🔆" --column="PROXY:PORT" --column="code" --column="flag" $(for i in $(cat https); do
                 country_code=$(curl  -x "$i" -m 5  ifconfig.io/country_code)
                 echo -en "false $i $(bash /usr/local/bin/TorNet/scripts/country_flags.sh $country_code) \n"
             done) --width=350 --height=450)

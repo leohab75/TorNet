@@ -27,8 +27,8 @@ source /usr/local/bin/TorNet/venv/bin/activate
 
 pip install --upgrade pip wheel setuptools
 
-#for tray
-pip install pystray Pillow PyGObject  PyQt5  PyQt5-sip
+#for tray and gui
+pip install pystray Pillow PyGObject  PyQt6
 #for proxy
 pip install  -r /usr/local/bin/TorNet/scripts/proxy/requirements.txt 
 

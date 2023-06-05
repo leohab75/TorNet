@@ -26,28 +26,11 @@ if [[ -d /usr/local/bin/TorNet/tmp/servers/ ]]; then
 
             else
 
-                cat /usr/local/bin/TorNet/tmp/servers/$select_server | sed '$d' | tee /usr/local/bin/TorNet/source/server.ovpn 1 &>/dev/null
+                cat /usr/local/bin/TorNet/tmp/servers/$select_server | sed '$d' | tee /usr/local/bin/TorNet/source/TorNet.ovpn  1 &>/dev/null
 
                 pkexec bash /usr/local/bin/TorNet/scripts/vpngate_select.sh &
 
-                (for ((i = 1; i <= 30; i++)); do
-                    echo -e "# connect Vpn Gate ... $i сек (30)"
-                    sleep 1
-                done) | zenity --window-icon="$icon" --progress --pulsate --title="Connect" --no-cancel --width=300 --auto-close --auto-kill 
 
-                if grep -q "Initialization Sequence Completed" /usr/local/bin/TorNet/tmp/vpn.log; then
-                    zenity --info --window-icon="$icon" --text="$TorNet Initialization Sequence Completed" --width=300
-                    killall tor
-                elif grep -q "Options error: unknown --redirect-gateway flag: def" /usr/local/bin/TorNet/tmp/vpn.log; then
-                    zenity --error --window-icon="$icon" --text="$TorNet Options error: unknown --redirect-gateway flag: def" --width=300
-
-                elif grep -q "AUTH: Received control message: AUTH_FAILED" /usr/local/bin/TorNet/tmp/vpn.log; then
-                    zenity --error --window-icon="$icon" --text="$TorNet AUTH: Received control message: AUTH_FAILED" --width=300
-
-                else
-                    zenity --error --window-icon="$icon" --text="$TorNet ERROR \n Connect is failed -def" --width=300
-
-                fi
 
                 TorNet 1&>/dev/null
             fi

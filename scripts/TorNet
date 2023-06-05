@@ -30,7 +30,7 @@ def on_clicked(icon, item):
     elif str(item) == "Stop Tor":
         os.system("bash /usr/bin/TorNet 'stop_tor'")
     elif str(item) == "HTTPs Proxy":
-        os.system("bash /usr/bin/TorNet 'gui_proxy'")
+        os.system("bash /usr/bin/TorNet 'https_proxy'")
     elif str(item) == "Check IP":
         os.system("bash /usr/bin/TorNet 'status'")
     elif str(item) == "Speedtest":

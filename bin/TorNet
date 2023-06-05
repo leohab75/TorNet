@@ -110,8 +110,16 @@ function speedtest() {
 
 case "$1" in
 
-"gui_proxy")
+"https_proxy")
     bash /usr/local/bin/TorNet/scripts/proxy/https_proxy.sh
+    TorNet_tray
+    ;;
+"http_proxy")
+    bash /usr/local/bin/TorNet/scripts/proxy/http_proxy.sh
+    TorNet_tray
+    ;;
+"socks5_proxy")
+    bash /usr/local/bin/TorNet/scripts/proxy/socks5_proxy.sh
     TorNet_tray
     ;;
 "start_tor")
@@ -154,6 +162,9 @@ case "$1" in
     echo -e "$RED│$GREEN TorNet 'start_tor'   $RED│$BLUE Пропустить весь трафик через Tor  $RED│"
     echo -e "$RED│$GREEN TorNet 'proxy_tor'   $RED│$BLUE Включить клиент Snowflake         $RED│"
     echo -e "$RED│$GREEN TorNet 'stop_tor'    $RED│$BLUE Выключить Tor                     $RED│"
+    echo -e "$RED│$GREEN TorNet 'https_proxy' $RED│$BLUE HTTPs Proxy                       $RED│"
+    echo -e "$RED│$GREEN TorNet 'http_proxy'  $RED│$BLUE HTTP Proxy                        $RED│"
+    echo -e "$RED│$GREEN TorNet 'socks5_proxy'$RED│$BLUE Socks5 Proxy                      $RED│"
     echo -e "$RED│$GREEN TorNet 'stop_vpn'    $RED│$BLUE Выключить VPNGate                 $RED│"
     echo -e "$RED│$GREEN TorNet 'speedtest'   $RED│$BLUE Проверить скорость соединения     $RED│"
     echo -e "$RED│$GREEN TorNet 'status'      $RED│$BLUE показать IP                       $RED│"
