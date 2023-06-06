@@ -19,8 +19,7 @@ if [[ -n $(grep -i "ubuntu" /etc/os-release) ]]; then
 
     apt update
 
-    apt install zenity wget openvpn curl xclip network-manager-openvpn network-manager-openvpn-gnome network-manager-vpnc net-tools
- xterm -y
+    apt install zenity wget openvpn curl xclip network-manager-openvpn network-manager-openvpn-gnome network-manager-vpnc net-tools xterm -y
     apt install pip -y || apt install python3-pip -y
 
     apt-get install libayatana-appindicator3-dev -y
@@ -47,8 +46,7 @@ elif [[ -n $(grep -i "fedora" /etc/os-release) ]]; then
 
     echo -e "\n$GREEN  Установка Тор и зависимостей \n$RESETCOLOR"
     dnf makecache --refresh
-    dnf install tor zenity wget curl openvpn torsocks pip xclip NetworkManager-openvpn NetworkManager-openvpn-gnome xterm net-tools
- -y
+    dnf install tor zenity wget curl openvpn torsocks pip xclip NetworkManager-openvpn NetworkManager-openvpn-gnome xterm net-tools -y
 
     dnf install libappindicator-gtk3 -y || dnf install libappindicator-gtk3-devel -y
 
