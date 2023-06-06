@@ -125,7 +125,7 @@ class App(QMainWindow):
         os.system('echo "Button {} clicked"'.format(text))
         # TOR
         if text == "Start Tor":
-            run_comand = "TorNet 'start_tor'"
+            run_comand = "/usr/bin/TorNet 'start_tor'"
             self.label.setText(run_comand)
             os.system(f'/bin/bash  {run_comand} &')
         elif text == "Stop Tor":
