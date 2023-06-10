@@ -1,5 +1,5 @@
 TorNet - это простая и понятная утилита для запуска Tor через proxy/socks5 или перенаправления всего .net трафика через сеть Tor. Так же, даёт возможность подключиться по OpenVPN к серверам VPN Gate по всему миру.
-Работает на Fedora и Ubuntu, предпочтительно KDE 
+Работает на Fedora, Ubuntu, Arch; предпочтительно KDE.
 
 (при запуске некоторых опции Tor будет запускаться окно xterm с отладочной информацией. Его можно смело закрывать...)
 
@@ -24,6 +24,6 @@ terminal: TorNet + bash_completion
 ![screen-gif](./TorNet_2.gif)
 
 как это работает:
-  https://www.youtube.com/watch?v=ORcjC_GwcMI
+ https://youtu.be/DxrPaEb3KeI
 
 !если не заводится OpenVPN, то просто доустановите: https://unlix.ru/как-установить-openvpn-3-на-linux/
