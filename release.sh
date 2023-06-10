@@ -57,6 +57,16 @@ elif [[ -n $(grep -i "fedora" /etc/os-release) ]]; then
     wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-x86_64.rpm
     rpm -ivh cloudflared-linux-x86_64.rpm
 
+
+elif [[ -n $(grep -i "arch" /etc/os-release) ]]; then
+
+    pacman -Sy  cloudflared zenity wget openvpn curl xclip networkmanager-openvpn networkmanager-vpnc net-tools xterm --noconfirm
+
+    pacman -S libayatana-appindicator libgirepository tor torsocks python-pip --noconfirm
+    ln /usr/bin/cloudflared /usr/local/bin/
+
+
+
 else
 
     echo -e "\n----------------"
@@ -100,7 +110,7 @@ mv /etc/resolv.conf /etc/resolv.conf.back
 rm -f /etc/resolv.conf
 
 echo nameserver 127.0.0.1 | tee /etc/resolv.conf
-# systemctl restart NetworkManager
+systemctl restart NetworkManager
 
 echo -e "\n$GREEN*$BLUE правим конфиги Network\n $RESETCOLOR"
 
