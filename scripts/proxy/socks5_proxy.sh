@@ -11,6 +11,7 @@ choice=$(zenity --list --radiolist --window-icon="$icon" --title="Proxy socks5:/
     --column="code" --column="flag" "true" "UPDATE" "proxy" "list" $(for i in $(cat socks5);
     do
         country_code=$(curl  -m 5 --socks5 "$i" ifconfig.io/country_code)
+        zenity --notification --text="TorNet \n Check: $i"
         echo -en "false $i $(bash /usr/local/bin/TorNet/scripts/country_flags.sh $country_code) \n"
     done) --width=350 --height=450)
 
@@ -30,6 +31,7 @@ if [[ "$?" == "0" ]]; then
         buff=$(zenity --list --radiolist --window-icon="$icon" --title="Proxy socks5://" --text="$TorNet \n Всего: $all_proxy \n " \
             --column="🔆" --column="PROXY:PORT" --column="code" --column="flag" $(for i in $(cat socks5); do
                 country_code=$(curl -m 5 --socks5 "$i"  ifconfig.io/country_code)
+                zenity --notification --text="TorNet \n Check: $i"
                 echo -en "false $i $(bash /usr/local/bin/TorNet/scripts/country_flags.sh $country_code) \n"
             done) --width=350 --height=450)
 
