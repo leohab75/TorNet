@@ -1,14 +1,14 @@
 #!/bin/bash
 
 if [[ ! -f iptables.rules ]]; then
-        iptables-save > iptables.rules
+        iptables-save > $HOME/iptables.rules
 fi
 
 if [[ "$1" == "start" ]]; then
                 
                 
         echo -e "start tor via nat route"
-        iptables-save >iptables.rules
+        iptables-save > $HOME/iptables.rules
 
         tor_uid="debian-tor"
 
@@ -56,7 +56,7 @@ elif [[ "$1" == "stop" ]]; then
         sysctl -w net.ipv6.conf.default.disable_ipv6=0
         sysctl -w net.ipv6.conf.lo.disable_ipv6=0
 
-        iptables-restore <iptables.rules
+        iptables-restore <  $HOME/iptables.rules
 
         killall tor
 

@@ -1,6 +1,9 @@
 #!/bin/bash
 
-iptables-restore  <iptables.rules
+iptables -t nat -F
+iptables -t nat -X
+
+iptables-restore  < $HOME/iptables.rules
 nmcli connection down TorNet
 nmcli connection delete TorNet
 systemctl restart NetworkManager
