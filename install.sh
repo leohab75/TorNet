@@ -31,6 +31,8 @@ pip install --upgrade pip wheel setuptools
 pip install pystray Pillow PyGObject  PyQt6
 #for proxy
 pip install  -r /usr/local/bin/TorNet/scripts/proxy/requirements.txt 
+#for speedtest
+pip install speedtest-cli
 
 # deactivate
 

@@ -24,7 +24,7 @@ function TorNet_tray() {
     TorNet_tray_pid=$(pgrep -f "python3 /usr/local/bin/TorNet/scripts/TorNet")
 
     if [[ ! "$TorNet_tray_pid" == "" ]]; then
-        kill $TorNet_tray_pid 2&>/dev/null
+        kill $TorNet_tray_pid 2 &>/dev/null
     fi
 
     if [[ -n $(pidof openvpn) && -n $(pidof snowflake-client) ]]; then
@@ -52,7 +52,7 @@ function status_client() {
 
     if [[ -n $(pidof snowflake-client) ]]; then
         Socks_IP=""
-        Socks_IP=$(curl --socks5 127.0.0.1:2323 http://eth0.me)
+        Socks_IP=$(curl --socks5 127.0.0.1:2323 http://ifconfig.io)
     else
         Socks_IP="Disabled proxy socks5"
     fi
@@ -88,7 +88,7 @@ function status_client() {
 
     else
 
-        zenity --window-icon="$icon" --info --window-icon="$icon" --text="$TorNet Ваш текущий IP адрес: $IP \n\
+        zenity --window-icon="$icon" --info --text="$TorNet Ваш текущий IP адрес: $IP \n\
                     IP через socks5: $Socks_IP  \n\
                     Tor Status: $Tor_status
                     Код страны: $(bash /usr/local/bin/TorNet/scripts/country_flags.sh) \n\
@@ -100,11 +100,8 @@ function status_client() {
 
 function speedtest() {
 
-    speed=$(curl -w 'Speed: %{speed_download}\n' -s http://speedtest.tele2.net/20MB.zip -o /dev/null)
-    _ping=$(ping -c 4 -i 0.3 8.8.8.8 | tail -1 | awk '{print $4}' | cut -d '/' -f 2)
-
-    zenity --info --window-icon="$icon" --text="$TorNet \n Download [20mb] speedtest.tele2.net\n Speed: $((${speed:7} / 102400)) Mb/s \n \
-                     Ping (8.8.8.8) time: $_ping" --height=200 --width=300
+    /usr/local/bin/TorNet/venv/bin/speedtest-cli --simple >speedtest.txt
+    zenity --window-icon="$icon" --info --title="speedtest" --text="$TorNet \n\t Speedtest by OOkla \n\n $(cat speedtest.txt)" --height=200 --width=300
 
 }
 
