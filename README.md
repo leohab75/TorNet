@@ -5,7 +5,7 @@ TorNet - это простая и понятная утилита для зап�
 
 установка:
 
-git clone https://github.com/leohab75/TorNet && cd TorNet/ && bash install.sh
+```git clone -b main https://github.com/leohab75/tornet.git && cd tornet/ && bash install.sh```
 
 [![Typing SVG](https://readme-typing-svg.herokuapp.com?color=%2336BCF7&lines=TorNet+use+Tor+and+VPNGate)](https://git.io/typing-svg)
 

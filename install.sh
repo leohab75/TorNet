@@ -7,6 +7,7 @@ export BLUE='\033[1;94m'
 
 echo -e "\n$GREEN*$BLUE миграция во временный каталог \n$RESETCOLOR"
 cd ../
+mv tornet TorNet
 cp -r TorNet/ /tmp/
 
 echo -e "/tmp/TorNet \n"
