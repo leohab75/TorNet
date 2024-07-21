@@ -7,7 +7,7 @@ export BLUE='\033[1;94m'
 
 echo -e "\n$GREEN*$BLUE миграция во временный каталог \n$RESETCOLOR"
 cd ../
-cp -r TorNet/ /tmp/
+cp -R TorNet/ /tmp/
 
 echo -e "/tmp/TorNet \n"
 
@@ -34,7 +34,7 @@ pip install  -r /usr/local/bin/TorNet/scripts/proxy/requirements.txt
 #for speedtest
 pip install speedtest-cli
 
-# deactivate
+deactivate
 
 #fonts
 if [[ ! -d $HOME/.fonts ]]; then
@@ -61,7 +61,7 @@ TorNet="<span foreground='red' font='14'>T</span>orNet \n"
 icon="/usr/local/bin/TorNet/source/icons/TorNet.png"
 check_list=$(zenity --window-icon="$icon" --title="Optins" --text="$TorNet Почти готово ..." --list --checklist --separator=" " \
     --column="🔆" --column="key" --column="Описание" --hide-column=2 TRUE add_tray "Добавить TorNet в автозагрузку ??." \
-    TRUE no_passwd "Отключить ввод пароля ..." --height=200 --width=350)
+    TRUE no_passwd "Отключить ввод пароля ..." --height=300 --width=450)
 
 if [[ $? = "0" ]]; then
 
