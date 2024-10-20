@@ -7,7 +7,7 @@ export RESETCOLOR='\033[1;00m'
 
 echo -e "\n $GREEN*$BLUE Определятся версия ОС \n"
 
-if [[ -n $(grep -i "ubuntu" /etc/os-release) ]]; then
+if [[ -n $(grep -i "debian" /etc/os-release) || -n $(grep -i "ubuntu" /etc/os-release) ]]; then
 
     echo -e "\n $RED -------------"
     echo -e "Relese OS: "
